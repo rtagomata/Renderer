@@ -1,12 +1,7 @@
 #pragma once
-#include <gl/glut.h>
-
-#include "RoomMesh.h"
-#include "VECTOR3D.h"
 #include "StaticPropertyValues.h"
-
 namespace callbackFunctions {
-	RoomMesh* roomMesh;
+	RoomMesh*  roomMesh;
 	void display(void);
 	void drawRoom();
 	void reshape(int w, int h);

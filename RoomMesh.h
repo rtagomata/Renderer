@@ -1,4 +1,6 @@
+#pragma once
 #include "VECTOR3D.h"
+
 struct MeshVertex
 {
 	VECTOR3D	position;

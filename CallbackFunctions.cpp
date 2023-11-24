@@ -1,14 +1,14 @@
 #include "CallbackFunctions.h"
-
 namespace callbackFunctions {
 	int currentButton;
-	RoomMesh* roomMesh = nullptr;
+
 	void display(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		gluLookAt(10.0, 8.0, 36.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		glPushMatrix();
 		drawRoom();
+		callbackFunctions::roomMesh->DrawMesh(16);
 		glPopMatrix();
 		glutSwapBuffers();
 	}

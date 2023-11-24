@@ -1,5 +1,5 @@
+#pragma once
 #include "Initializer.h"
-#include "CallbackFunctions.h"
 
 const int vWidth = 1040;
 const int vHeight = 980;

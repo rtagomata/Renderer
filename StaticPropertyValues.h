@@ -1,7 +1,9 @@
 #pragma once
-#include <gl/glut.h>
+
+#include "RoomMesh.h"
 
 namespace staticPropertyValues {
+
 	static GLfloat room_mat_ambient[] = { 0.0f,0.0f,0.0f,1.0f };
 	static GLfloat room_mat_specular[] = { 0.45f,0.55f,0.45f,1.0f };
 	static GLfloat room_mat_diffuse[] = { 0.1f,0.35f,0.1f,1.0f };

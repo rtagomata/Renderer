@@ -12,7 +12,7 @@
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
 //////////////////////////////////////////////////////////////////////////////////////////	
-
+#pragma once
 #ifndef VECTOR3D_H
 #define VECTOR3D_H
 #include <stdlib.h>
