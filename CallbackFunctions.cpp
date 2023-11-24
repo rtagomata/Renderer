@@ -1,12 +1,27 @@
 #include "CallbackFunctions.h"
-
+#define cameraControl 0
+#define playerControl 1
 namespace callbackFunctions {
+
+	GLfloat eyeX = 10.0;
+	GLfloat eyeY = 1.0;
+	GLfloat eyeZ = 36.0;
+	GLfloat centerX = 0.0;
+	GLfloat centerY = 0.0;
+	GLfloat centerZ = 0.0;
+	GLfloat upX = 0.0;
+	GLfloat upY = 1.0;
+	GLfloat upZ = 0.0;
+
+
+
 	RoomMesh* roomMesh = nullptr;
 	int currentButton = 0;
+	int keyboardMode = cameraControl;
 	void display(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-		gluLookAt(10.0, 8.0, 36.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+		gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
 		glPushMatrix();
 		drawRoom();
 		callbackFunctions::roomMesh->DrawMesh(16);
@@ -33,7 +48,7 @@ namespace callbackFunctions {
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(60.0, (GLdouble)w / h, 0.2, 40.0);
+		gluPerspective(60.0, (GLfloat)w / h, 0.2, 40.0);
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
@@ -43,9 +58,31 @@ namespace callbackFunctions {
 	}
 
 	void keyboard(unsigned char key, int x, int y) {
-		switch (key)
+		if (keyboardMode == cameraControl)
 		{
+			switch (key)
+			{
+			case 'w': 
+				eyeZ -= 0.1;
+				break;
+			case 's':
+				eyeZ += 0.1;
+				break;
+			case 'a':
+				eyeX -= 0.1;
+				break;
+			case 'd':
+				eyeX += 0.1;
+				break;
+			case 'z':
+				eyeY += 0.1;
+				break;
+			case 'x':
+				eyeY -= 0.1;
+				break;
+			}
 		}
+
 		glutPostRedisplay();   // Trigger a window redisplay
 	}
 
