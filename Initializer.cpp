@@ -1,6 +1,8 @@
 #include "Initializer.h"
-
+#include "VECTOR3D.h"
+#include "RoomMesh.h"
 namespace Initializer {
+
 	bool initGlut(int argc, char** argv, const int& vWidth, const int& vHeight) {
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -35,6 +37,24 @@ namespace Initializer {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+
+		VECTOR3D origin = VECTOR3D(-16.0f, 0.0f, 16.0f);
+		VECTOR3D dir1v = VECTOR3D(1.0f, 0.0f, 0.0f);
+		VECTOR3D dir2v = VECTOR3D(0.0f, 0.0f, -1.0f);
+		roomMesh = new RoomMesh(16, 32.0);
+		roomMesh->InitMesh(16, origin, 32.0, 32.0, dir1v, dir2v);
+
+		VECTOR3D ambient = VECTOR3D(0.0f, 0.05f, 0.0f);
+		VECTOR3D diffuse = VECTOR3D(0.4f, 0.8f, 0.4f);
+		VECTOR3D specular = VECTOR3D(0.04f, 0.04f, 0.04f);
+		float shininess = 0.2;
+		roomMesh->SetMaterial(ambient, diffuse, specular, shininess);
+
+
+
+
+
+
 		return true;
 	}
 

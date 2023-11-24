@@ -174,12 +174,15 @@
   <ItemGroup>
     <ClCompile Include="CallbackFunctions.cpp" />
     <ClCompile Include="Initializer.cpp" />
+    <ClCompile Include="RoomMesh.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackFunctions.h" />
     <ClInclude Include="Initializer.h" />
+    <ClInclude Include="RoomMesh.h" />
     <ClInclude Include="StaticPropertyValues.h" />
+    <ClInclude Include="VECTOR3D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

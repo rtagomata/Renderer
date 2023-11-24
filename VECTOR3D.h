@@ -15,7 +15,13 @@
 
 #ifndef VECTOR3D_H
 #define VECTOR3D_H
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <gl/glut.h>
+#include <utility>
+#include <vector>
 class VECTOR3D
 {
 public:
