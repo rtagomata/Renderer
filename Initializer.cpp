@@ -1,7 +1,5 @@
 #include "Initializer.h"
 namespace Initializer {
-
-
 	bool initGlut(int argc, char** argv, const int& vWidth, const int& vHeight) {
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

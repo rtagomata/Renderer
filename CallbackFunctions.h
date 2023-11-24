@@ -1,7 +1,8 @@
 #pragma once
 #include "StaticPropertyValues.h"
 namespace callbackFunctions {
-	RoomMesh*  roomMesh;
+	extern RoomMesh* roomMesh;
+	extern int currentButton;
 	void display(void);
 	void drawRoom();
 	void reshape(int w, int h);

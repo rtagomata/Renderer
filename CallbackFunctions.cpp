@@ -1,7 +1,8 @@
 #include "CallbackFunctions.h"
-namespace callbackFunctions {
-	int currentButton;
 
+namespace callbackFunctions {
+	RoomMesh* roomMesh = nullptr;
+	int currentButton = 0;
 	void display(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();

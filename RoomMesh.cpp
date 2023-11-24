@@ -196,11 +196,9 @@ void RoomMesh::DrawMesh(int meshSize)
 	}
 }
 
-
-
-
-
-
+void RoomMesh::UpdateMesh()
+{
+}
 
 void RoomMesh::FreeMemory()
 {
