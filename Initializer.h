@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 
+#include "VECTOR3D.h"
+#include "RoomMesh.h"
 #include "callbackFunctions.h"
 
 namespace Initializer {
