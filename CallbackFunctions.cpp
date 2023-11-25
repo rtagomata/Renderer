@@ -13,7 +13,8 @@ namespace callbackFunctions {
 	GLfloat upY = 1.0;
 	GLfloat upZ = 0.0;
 
-
+	int previousX = 0;
+	int previousY = 0;
 
 	RoomMesh* roomMesh = nullptr;
 	int currentButton = 0;
@@ -124,9 +125,25 @@ namespace callbackFunctions {
 	void mouseMotionHandler(int xMouse, int yMouse) {
 		if (currentButton == GLUT_LEFT_BUTTON)
 		{
-			;
+			if (previousX < xMouse)
+			{
+				eyeX -= 0.1;
+			}
+			else if (previousX > xMouse)
+			{
+				eyeX += 0.1;
+			}
+			if (previousY < yMouse)
+			{
+				eyeY += 0.1;
+			}
+			else if (previousY > yMouse)
+			{
+				eyeY -= 0.1;
+			}
 		}
-
+		previousX = xMouse;
+		previousY = yMouse;
 		glutPostRedisplay();   // Trigger a window redisplay
 	}
 }
