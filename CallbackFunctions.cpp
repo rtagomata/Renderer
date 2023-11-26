@@ -5,10 +5,10 @@ namespace callbackFunctions {
 
 	GLfloat eyeX = 10.0;
 	GLfloat eyeY = 1.0;
-	GLfloat eyeZ = 36.0;
-	GLfloat centerX = 0.0;
+	GLfloat eyeZ = 4.0;
+	GLfloat centerX = 9.0;
 	GLfloat centerY = 0.0;
-	GLfloat centerZ = 0.0;
+	GLfloat centerZ = 3.0;
 	GLfloat upX = 0.0;
 	GLfloat upY = 1.0;
 	GLfloat upZ = 0.0;
@@ -133,19 +133,19 @@ namespace callbackFunctions {
 		{
 			if (previousX < xMouse)
 			{
-				eyeX -= 0.1;
+				centerX -= 0.01;
 			}
 			else if (previousX > xMouse)
 			{
-				eyeX += 0.1;
+				centerX += 0.01;
 			}
 			if (previousY < yMouse)
 			{
-				eyeY += 0.1;
+				centerY += 0.01;
 			}
 			else if (previousY > yMouse)
 			{
-				eyeY -= 0.1;
+				centerY -= 0.01;
 			}
 		}
 		previousX = xMouse;
