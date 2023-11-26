@@ -65,21 +65,27 @@ namespace callbackFunctions {
 			{
 			case 'w': 
 				eyeZ -= 0.1;
+				centerZ -= 0.1;
 				break;
 			case 's':
 				eyeZ += 0.1;
+				centerZ += 0.1;
 				break;
 			case 'a':
 				eyeX -= 0.1;
+				centerX -= 0.1;
 				break;
 			case 'd':
 				eyeX += 0.1;
+				centerX += 0.1;
 				break;
 			case 'z':
 				eyeY += 0.1;
+				centerY += 0.1;
 				break;
 			case 'x':
 				eyeY -= 0.1;
+				centerY -= 0.1;
 				break;
 			}
 		}
