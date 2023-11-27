@@ -63,7 +63,7 @@ namespace callbackFunctions {
 		{
 			VECTOR3D* refToCam = new VECTOR3D((float)centerX-eyeX, (float)centerY-eyeY, (float)centerZ-eyeZ);
 			VECTOR3D* yUnitVec = new VECTOR3D(0,1.0f, 0);
-			VECTOR3D* xUnitVec = new VECTOR3D(1.0f,0, 0);
+			VECTOR3D* xUnitVec = new VECTOR3D(0,0, 1.0f);
 			VECTOR3D u1 = refToCam->CrossProduct(*yUnitVec);
 			VECTOR3D u2 = refToCam->CrossProduct(*xUnitVec);
 			refToCam->Normalize();
