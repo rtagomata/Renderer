@@ -157,7 +157,8 @@ namespace callbackFunctions {
 		default:
 			break;
 		}
-
+		previousX = x;
+		previousY = y;
 		glutPostRedisplay();   // Trigger a window redisplay
 	}
 
