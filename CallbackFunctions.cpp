@@ -18,6 +18,7 @@ namespace callbackFunctions {
 
 	RoomMesh* roomMesh = nullptr;
 	int currentButton = 0;
+	bool firstTimeMouseMovement = true;
 	int keyboardMode = cameraControl;
 	void display(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -163,21 +164,27 @@ namespace callbackFunctions {
 	void mouseMotionHandler(int xMouse, int yMouse) {
 		if (currentButton == GLUT_LEFT_BUTTON)
 		{
+			if (firstTimeMouseMovement) {
+				previousX = xMouse;
+				previousY = yMouse;
+				firstTimeMouseMovement = false;
+				return;
+			}
 			if (previousX < xMouse)
 			{
-				centerX -= 0.07;
+				centerX += 0.01 * (previousX-xMouse);
 			}
 			else if (previousX > xMouse)
 			{
-				centerX += 0.07;
+				centerX += 0.01 * (previousX - xMouse);
 			}
 			if (previousY < yMouse)
 			{
-				centerY += 0.07;
+				centerY += 0.01 * (yMouse - previousY);
 			}
 			else if (previousY > yMouse)
 			{
-				centerY -= 0.07;
+				centerY += 0.01 * (yMouse - previousY);
 			}
 		}
 		previousX = xMouse;

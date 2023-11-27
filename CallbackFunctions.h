@@ -3,6 +3,7 @@
 namespace callbackFunctions {
 	extern RoomMesh* roomMesh;
 	extern int currentButton;
+	extern bool firstTimeMouseMovement;
 	void display(void);
 	void drawRoom();
 	void reshape(int w, int h);
