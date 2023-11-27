@@ -54,7 +54,8 @@ namespace Initializer {
 		glutReshapeFunc(callbackFunctions::reshape);
 		glutMouseFunc(callbackFunctions::mouse);
 		glutMotionFunc(callbackFunctions::mouseMotionHandler);
-		glutKeyboardFunc(callbackFunctions::keyboard);
+		glutKeyboardFunc(callbackFunctions::keyboardDown);
+		glutKeyboardUpFunc(callbackFunctions::keyboardUp);
 		glutSpecialFunc(callbackFunctions::functionKeys);
 		return true;
 	}
