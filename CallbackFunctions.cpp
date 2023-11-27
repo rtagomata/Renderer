@@ -40,7 +40,6 @@ namespace callbackFunctions {
 		callbackFunctions::roomMesh->DrawMesh(16);
 		glPopMatrix();
 		glutSwapBuffers();
-		trialMovement();
 	}
 
 	void drawRoom() {
@@ -71,68 +70,49 @@ namespace callbackFunctions {
 		//glduLookAt(0.0, 6.0, 22.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	}
 
-	void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
-	void keyboardDown(unsigned char key, int x, int y) { keys[key] = true; }
+	void keyboardUp(unsigned char key, int x, int y) {
+		keys[key] = false;
+		trialMovement();
+	}
+	void keyboardDown(unsigned char key, int x, int y) { 
+		keys[key] = true;
+		trialMovement();
+	}
 
 	void trialMovement() {
 		if (!keys['w'] && !keys['a'] && !keys['s'] && !keys['d'] && !keys['z'] && !keys['x']) {
 			return;
 		}
-		VECTOR3D* refToCam = new VECTOR3D((float)centerX - eyeX, (float)centerY - eyeY, (float)centerZ - eyeZ);
-		VECTOR3D* yUnitVec = new VECTOR3D(0, 1.0f, 0);
-		VECTOR3D u1 = refToCam->CrossProduct(*yUnitVec);
-		VECTOR3D u2 = refToCam->CrossProduct(u1);
-		refToCam->Normalize();
+		refToCam = center - eye;
+		VECTOR3D u1 = refToCam.CrossProduct(yUnitVec);
+		VECTOR3D u2 = refToCam.CrossProduct(u1);
+		refToCam.Normalize();
+
 		u1.Normalize();
 		u2.Normalize();
-
 		if (keys['w']) {
-			eyeZ += 0.1 * refToCam->z;
-			centerZ += 0.1 * refToCam->z;
-			eyeY += 0.1 * refToCam->y;
-			centerY += 0.1 * refToCam->y;
-			eyeX += 0.1 * refToCam->x;
-			centerX += 0.1 * refToCam->x;
+			eye += refToCam;
+			center += refToCam;
 		}
 		if (keys['s']) {
-			eyeZ += -0.1 * refToCam->z;
-			centerZ += -0.1 * refToCam->z;
-			eyeY += -0.1 * refToCam->y;
-			centerY += -0.1 * refToCam->y;
-			eyeX += -0.1 * refToCam->x;
-			centerX += -0.1 * refToCam->x;
+			eye -= refToCam;
+			center -= refToCam;
 		}
 		if (keys['a']) {
-			eyeZ += -0.1 * u1.z;
-			centerZ += -0.1 * u1.z;
-			eyeY += -0.1 * u1.y;
-			centerY += -0.1 * u1.y;
-			eyeX += -0.1 * u1.x;
-			centerX += -0.1 * u1.x;
+			eye -= u1;
+			center -= u1;
 		}
 		if (keys['d']) {
-			eyeZ += 0.1 * u1.z;
-			centerZ += 0.1 * u1.z;
-			eyeY += 0.1 * u1.y;
-			centerY += 0.1 * u1.y;
-			eyeX += 0.1 * u1.x;
-			centerX += 0.1 * u1.x;
+			eye += u1;
+			center += u1;
 		}
 		if (keys['z']) {
-			eyeZ += 0.1 * u2.z;
-			centerZ += 0.1 * u2.z;
-			eyeY += 0.1 * u2.y;
-			centerY += 0.1 * u2.y;
-			eyeX += 0.1 * u2.x;
-			centerX += 0.1 * u2.x;
+			eye += u2;
+			center += u2;
 		}
 		if (keys['x']) {
-			eyeZ += -0.1 * u2.z;
-			centerZ += -0.1 * u2.z;
-			eyeY += -0.1 * u2.y;
-			centerY += -0.1 * u2.y;
-			eyeX += -0.1 * u2.x;
-			centerX += -0.1 * u2.x;
+			eye -= u2;
+			center -= u2;
 		}
 
 		/*
