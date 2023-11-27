@@ -61,37 +61,64 @@ namespace callbackFunctions {
 	void keyboard(unsigned char key, int x, int y) {
 		if (keyboardMode == cameraControl)
 		{
-			VECTOR3D* testV = new VECTOR3D((float)centerX, (float)centerY, (float)centerZ);
-			testV->Normalize();
+			VECTOR3D* refToCam = new VECTOR3D((float)centerX-eyeX, (float)centerY-eyeY, (float)centerZ-eyeZ);
+			VECTOR3D* yUnitVec = new VECTOR3D(0,1.0f, 0);
+			VECTOR3D* xUnitVec = new VECTOR3D(1.0f,0, 0);
+			VECTOR3D u1 = refToCam->CrossProduct(*yUnitVec);
+			VECTOR3D u2 = refToCam->CrossProduct(*xUnitVec);
+			refToCam->Normalize();
+			u1.Normalize();
+			u2.Normalize();
+
 			switch (key)
 			{
 			case 'w': 
-				eyeZ += -0.1 * testV->z;
-				centerZ += -0.1* testV->z;
-				eyeY += -0.1 * testV->y;
-				centerY += -0.1 * testV->y;
-				eyeX += -0.1 * testV->x;
-				centerX += -0.1 * testV->x;
+				eyeZ += 0.1 * refToCam->z;
+				centerZ += 0.1* refToCam->z;
+				eyeY += 0.1 * refToCam->y;
+				centerY += 0.1 * refToCam->y;
+				eyeX += 0.1 * refToCam->x;
+				centerX += 0.1 * refToCam->x;
 				break;
 			case 's':
-				eyeZ += 0.1 * testV->z;
-				centerZ += 0.1;
+				eyeZ += -0.1 * refToCam->z;
+				centerZ += -0.1 * refToCam->z;
+				eyeY += -0.1 * refToCam->y;
+				centerY += -0.1 * refToCam->y;
+				eyeX += -0.1 * refToCam->x;
+				centerX += -0.1 * refToCam->x;
 				break;
 			case 'a':
-				eyeX -= 0.1;
-				centerX -= 0.1;
+				eyeZ += -0.1 * u1.z;
+				centerZ += -0.1 * u1.z;
+				eyeY += -0.1 * u1.y;
+				centerY += -0.1 * u1.y;
+				eyeX += -0.1 * u1.x;
+				centerX += -0.1 * u1.x;
 				break;
 			case 'd':
-				eyeX += 0.1;
-				centerX += 0.1;
+				eyeZ += 0.1 * u1.z;
+				centerZ += 0.1 * u1.z;
+				eyeY += 0.1 * u1.y;
+				centerY += 0.1 * u1.y;
+				eyeX += 0.1 * u1.x;
+				centerX += 0.1 * u1.x;
 				break;
 			case 'z':
-				eyeY += 0.1;
-				centerY += 0.1;
+				eyeZ += 0.1 * u2.z;
+				centerZ += 0.1 * u2.z;
+				eyeY += 0.1 * u2.y;
+				centerY += 0.1 * u2.y;
+				eyeX += 0.1 * u2.x;
+				centerX += 0.1 * u2.x;
 				break;
 			case 'x':
-				eyeY -= 0.1;
-				centerY -= 0.1;
+				eyeZ += -0.1 * u2.z;
+				centerZ += -0.1 * u2.z;
+				eyeY += -0.1 * u2.y;
+				centerY += -0.1 * u2.y;
+				eyeX += -0.1 * u2.x;
+				centerX += -0.1 * u2.x;
 				break;
 			}
 		}
@@ -139,19 +166,19 @@ namespace callbackFunctions {
 		{
 			if (previousX < xMouse)
 			{
-				centerX -= 0.01;
+				centerX -= 0.07;
 			}
 			else if (previousX > xMouse)
 			{
-				centerX += 0.01;
+				centerX += 0.07;
 			}
 			if (previousY < yMouse)
 			{
-				centerY += 0.01;
+				centerY += 0.07;
 			}
 			else if (previousY > yMouse)
 			{
-				centerY -= 0.01;
+				centerY -= 0.07;
 			}
 		}
 		previousX = xMouse;
