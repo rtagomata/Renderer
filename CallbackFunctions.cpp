@@ -61,14 +61,20 @@ namespace callbackFunctions {
 	void keyboard(unsigned char key, int x, int y) {
 		if (keyboardMode == cameraControl)
 		{
+			VECTOR3D* testV = new VECTOR3D((float)centerX, (float)centerY, (float)centerZ);
+			testV->Normalize();
 			switch (key)
 			{
 			case 'w': 
-				eyeZ -= 0.1;
-				centerZ -= 0.1;
+				eyeZ += -0.1 * testV->z;
+				centerZ += -0.1* testV->z;
+				eyeY += -0.1 * testV->y;
+				centerY += -0.1 * testV->y;
+				eyeX += -0.1 * testV->x;
+				centerX += -0.1 * testV->x;
 				break;
 			case 's':
-				eyeZ += 0.1;
+				eyeZ += 0.1 * testV->z;
 				centerZ += 0.1;
 				break;
 			case 'a':
