@@ -112,60 +112,6 @@ namespace callbackFunctions {
 		if (keys['x']) {
 			eye -= u2;
 		}
-
-		/*
-		switch (key)
-		{
-		case 'w':
-			eyeZ += 0.1 * refToCam->z;
-			centerZ += 0.1 * refToCam->z;
-			eyeY += 0.1 * refToCam->y;
-			centerY += 0.1 * refToCam->y;
-			eyeX += 0.1 * refToCam->x;
-			centerX += 0.1 * refToCam->x;
-			break;
-		case 's':
-			eyeZ += -0.1 * refToCam->z;
-			centerZ += -0.1 * refToCam->z;
-			eyeY += -0.1 * refToCam->y;
-			centerY += -0.1 * refToCam->y;
-			eyeX += -0.1 * refToCam->x;
-			centerX += -0.1 * refToCam->x;
-			break;
-		case 'a':
-			eyeZ += -0.1 * u1.z;
-			centerZ += -0.1 * u1.z;
-			eyeY += -0.1 * u1.y;
-			centerY += -0.1 * u1.y;
-			eyeX += -0.1 * u1.x;
-			centerX += -0.1 * u1.x;
-			break;
-		case 'd':
-			eyeZ += 0.1 * u1.z;
-			centerZ += 0.1 * u1.z;
-			eyeY += 0.1 * u1.y;
-			centerY += 0.1 * u1.y;
-			eyeX += 0.1 * u1.x;
-			centerX += 0.1 * u1.x;
-			break;
-		case 'z':
-			eyeZ += 0.1 * u2.z;
-			centerZ += 0.1 * u2.z;
-			eyeY += 0.1 * u2.y;
-			centerY += 0.1 * u2.y;
-			eyeX += 0.1 * u2.x;
-			centerX += 0.1 * u2.x;
-			break;
-		case 'x':
-			eyeZ += -0.1 * u2.z;
-			centerZ += -0.1 * u2.z;
-			eyeY += -0.1 * u2.y;
-			centerY += -0.1 * u2.y;
-			eyeX += -0.1 * u2.x;
-			centerX += -0.1 * u2.x;
-			break;
-		}
-	}*/
 		glutPostRedisplay();   // Trigger a window redisplay
 	}
 
