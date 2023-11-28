@@ -37,7 +37,6 @@ namespace callbackFunctions {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		gluLookAt(eye.x, eye.y, eye.z, center.x + eye.x, center.y + eye.y, center.z + eye.z, upX, upY, upZ);
-		glRotatef(1.0, rotateAngle.x, rotateAngle.y, rotateAngle.z);
 		glPushMatrix();
 		drawRoom();
 		callbackFunctions::roomMesh->DrawMesh(16);
@@ -86,13 +85,15 @@ namespace callbackFunctions {
 		if (!keys['w'] && !keys['a'] && !keys['s'] && !keys['d'] && !keys['z'] && !keys['x']) {
 			return;
 		}
-		refToCam = center - eye;
+		refToCam = center;
 		VECTOR3D u1 = refToCam.CrossProduct(yUnitVec);
 		VECTOR3D u2 = refToCam.CrossProduct(u1);
 		refToCam.Normalize();
-		refToCam *= 0.1;
+		refToCam *= 0.05;
 		u1.Normalize();
+		u1 *= 0.05;
 		u2.Normalize();
+		u2 *= 0.05;
 		if (keys['w']) {
 			eye += refToCam;
 		}
@@ -183,27 +184,21 @@ namespace callbackFunctions {
 			{
 			case 'w': 
 				eye += refToCam;
-				center += refToCam;
 				break;
 			case 's':
 				eye -= refToCam;
-				center -= refToCam;
 				break;
 			case 'a':
 				eye -= u1;
-				center -= u1;
 				break;
 			case 'd':
 				eye += u1;
-				center += u1;
 				break;
 			case 'z':
 				eye += u2;
-				center += u2;
 				break;
 			case 'x':
 				eye -= u2;
-				center -= u2;
 				break;
 			}
 		}
@@ -270,6 +265,7 @@ namespace callbackFunctions {
 			rotateAngle.x = cos(yaw) * cos(pitch);
 			rotateAngle.y = sin(pitch);
 			rotateAngle.z = sin(yaw) * cos(pitch);
+			rotateAngle.Normalize();
 			center = rotateAngle;
 		}
 		previousX = xMouse;
