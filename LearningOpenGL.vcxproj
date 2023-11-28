@@ -173,12 +173,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CallbackFunctions.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Initializer.cpp" />
     <ClCompile Include="RoomMesh.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackFunctions.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Initializer.h" />
     <ClInclude Include="RoomMesh.h" />
     <ClInclude Include="StaticPropertyValues.h" />

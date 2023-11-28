@@ -1,5 +1,5 @@
 #pragma once
-#include "VECTOR3D.h"
+#include "GameObject.h"
 
 struct MeshVertex
 {
