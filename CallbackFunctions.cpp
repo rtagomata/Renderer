@@ -7,7 +7,7 @@ namespace callbackFunctions {
 	GLfloat eyeX = 10.0;
 	GLfloat eyeY = 1.0;
 	GLfloat eyeZ = 4.0;
-	VECTOR3D center = VECTOR3D(9.0, 0.0, 3.0);
+	VECTOR3D center = VECTOR3D(0.0, 0.0, -1.0);
 	GLfloat centerX = 9.0;
 	GLfloat centerY = 0.0;
 	GLfloat centerZ = 3.0;
@@ -21,6 +21,9 @@ namespace callbackFunctions {
 	VECTOR3D nyUnitVec = VECTOR3D(0.0, -1.0, 0.0);
 	VECTOR3D nxUnitVec = VECTOR3D(-1.0, 0.0, 0.0);
 
+	float yaw = 0.0;
+	float pitch = 0.0;
+
 	int previousX = 0;
 	int previousY = 0;
 
@@ -33,8 +36,8 @@ namespace callbackFunctions {
 	void display(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
+		gluLookAt(eye.x, eye.y, eye.z, center.x + eye.x, center.y + eye.y, center.z + eye.z, upX, upY, upZ);
 		glRotatef(1.0, rotateAngle.x, rotateAngle.y, rotateAngle.z);
-		gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, upX, upY, upZ);
 		glPushMatrix();
 		drawRoom();
 		callbackFunctions::roomMesh->DrawMesh(16);
@@ -259,22 +262,21 @@ namespace callbackFunctions {
 				firstTimeMouseMovement = false;
 				return;
 			}
-			if (previousX < xMouse)
-			{
-				rotateAngle = rotateAngle.CrossProduct(nxUnitVec);
-			}
-			else if (previousX > xMouse)
-			{
-				rotateAngle = rotateAngle.CrossProduct(xUnitVec);
-			}
-			if (previousY < yMouse)
-			{
-				rotateAngle = rotateAngle.CrossProduct(nyUnitVec);
-			}
-			else if (previousY > yMouse)
-			{
-				rotateAngle = rotateAngle.CrossProduct(yUnitVec);
-			}
+			float xoffset = (previousX - xMouse) * 0.01;
+			float yoffset = (yMouse - previousY) * 0.01;
+
+			yaw += xoffset;
+			pitch += yoffset;
+
+			if (pitch > 89.0f)
+				pitch = 89.0f;
+			if (pitch < -89.0f)
+				pitch = -89.0f;
+
+			rotateAngle.x = cos(yaw) * cos(pitch);
+			rotateAngle.y = sin(pitch);
+			rotateAngle.z = sin(yaw) * cos(pitch);
+			center = rotateAngle;
 		}
 		previousX = xMouse;
 		previousY = yMouse;
