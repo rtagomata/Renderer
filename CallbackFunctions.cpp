@@ -40,6 +40,7 @@ namespace callbackFunctions {
 		callbackFunctions::roomMesh->DrawMesh(16);
 		glPopMatrix();
 		glutSwapBuffers();
+		trialMovement();
 	}
 
 	void drawRoom() {
@@ -72,7 +73,6 @@ namespace callbackFunctions {
 
 	void keyboardUp(unsigned char key, int x, int y) {
 		keys[key] = false;
-		trialMovement();
 	}
 	void keyboardDown(unsigned char key, int x, int y) { 
 		keys[key] = true;
