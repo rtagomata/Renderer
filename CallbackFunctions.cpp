@@ -90,32 +90,26 @@ namespace callbackFunctions {
 		VECTOR3D u1 = refToCam.CrossProduct(yUnitVec);
 		VECTOR3D u2 = refToCam.CrossProduct(u1);
 		refToCam.Normalize();
-
+		refToCam *= 0.1;
 		u1.Normalize();
 		u2.Normalize();
 		if (keys['w']) {
 			eye += refToCam;
-			center += refToCam;
 		}
 		if (keys['s']) {
 			eye -= refToCam;
-			center -= refToCam;
 		}
 		if (keys['a']) {
 			eye -= u1;
-			center -= u1;
 		}
 		if (keys['d']) {
 			eye += u1;
-			center += u1;
 		}
 		if (keys['z']) {
 			eye += u2;
-			center += u2;
 		}
 		if (keys['x']) {
 			eye -= u2;
-			center -= u2;
 		}
 
 		/*
