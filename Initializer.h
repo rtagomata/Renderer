@@ -5,6 +5,7 @@
 
 namespace Initializer {
 	// Initialize GLUT
+
 	bool initGlut(int argc, char** argv, const int& vWidth, const int& vHeight);
 	
 	// Set up and enable lighting

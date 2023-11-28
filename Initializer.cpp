@@ -1,5 +1,4 @@
 #include "Initializer.h"
-
 namespace Initializer {
 	bool initGlut(int argc, char** argv, const int& vWidth, const int& vHeight) {
 		glutInit(&argc, argv);
@@ -35,6 +34,18 @@ namespace Initializer {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+
+		VECTOR3D origin = VECTOR3D(-16.0f, 0.0f, 16.0f);
+		VECTOR3D dir1v = VECTOR3D(1.0f, 0.0f, 0.0f);
+		VECTOR3D dir2v = VECTOR3D(0.0f, 0.0f, -1.0f);
+		callbackFunctions::roomMesh = new RoomMesh(16, 32.0);
+		callbackFunctions::roomMesh->InitMesh(16, origin, 32.0, 32.0, dir1v, dir2v);
+
+		VECTOR3D ambient = VECTOR3D(0.0f, 0.05f, 0.0f);
+		VECTOR3D diffuse = VECTOR3D(0.4f, 0.8f, 0.4f);
+		VECTOR3D specular = VECTOR3D(0.04f, 0.04f, 0.04f);
+		float shininess = 0.2;
+		callbackFunctions::roomMesh->SetMaterial(ambient, diffuse, specular, shininess);
 		return true;
 	}
 
@@ -43,7 +54,8 @@ namespace Initializer {
 		glutReshapeFunc(callbackFunctions::reshape);
 		glutMouseFunc(callbackFunctions::mouse);
 		glutMotionFunc(callbackFunctions::mouseMotionHandler);
-		glutKeyboardFunc(callbackFunctions::keyboard);
+		glutKeyboardFunc(callbackFunctions::keyboardDown);
+		glutKeyboardUpFunc(callbackFunctions::keyboardUp);
 		glutSpecialFunc(callbackFunctions::functionKeys);
 		return true;
 	}
