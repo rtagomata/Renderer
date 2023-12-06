@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackFunctions.h" />
+    <ClInclude Include="FileOperator.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Initializer.h" />
     <ClInclude Include="RoomMesh.h" />
