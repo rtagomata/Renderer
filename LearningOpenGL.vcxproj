@@ -180,10 +180,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackFunctions.h" />
-    <ClInclude Include="FileOperator.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Initializer.h" />
     <ClInclude Include="RoomMesh.h" />
+    <ClInclude Include="Serializer.h" />
     <ClInclude Include="StaticPropertyValues.h" />
     <ClInclude Include="VECTOR3D.h" />
   </ItemGroup>
