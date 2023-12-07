@@ -1,5 +1,6 @@
 #pragma once
-#include "StaticPropertyValues.h"
+#include "Misc.h"
+
 namespace callbackFunctions {
 	extern RoomMesh* roomMesh;
 	extern int currentButton;

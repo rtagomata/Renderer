@@ -60,6 +60,13 @@ namespace Initializer {
 		return true;
 	}
 
+	bool initializeGameObjects()
+	{
+		Cube* c = new Cube({ 1.0,1.0,1.0 }, { 1.0,1.0,1.0 }, 1.0, 0, 0, 0, 0);
+		game::gameObjects->push_back((GameObject*)c);
+		return true;
+	}
+
 	bool InitializeAll(int argc, char** argv, const int& vWidth, const int& vHeight) {
 		std::cout << "Initializing Glut...";
 		if (Initializer::initGlut(argc, argv, vWidth, vHeight)) {
@@ -67,7 +74,7 @@ namespace Initializer {
 		}
 		else {
 			std::cout << "FAILED!\n";
-			return 1;
+			return false;
 		}
 		std::cout << "Initializing OpenGL...";
 		if (Initializer::initOpenGL()) {
@@ -75,7 +82,7 @@ namespace Initializer {
 		}
 		else {
 			std::cout << "FAILED!\n";
-			return 1;
+			return false;
 		}
 		std::cout << "Setting callback fucntions...";
 		if (Initializer::setCallbackFunctions()) {
@@ -83,7 +90,16 @@ namespace Initializer {
 		}
 		else {
 			std::cout << "FAILED!\n";
-			return 1;
+			return false;
 		}
+		std::cout << "Initializing game objects...";
+		if (Initializer::initializeGameObjects()) {
+			std::cout << "OK!\n";
+		}
+		else {
+			std::cout << "FAILED!\n";
+			return false;
+		}
+		return true;
 	}
 }

@@ -51,10 +51,9 @@ namespace callbackFunctions {
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, staticPropertyValues::room_mat_diffuse);
 		glMaterialfv(GL_FRONT, GL_SHININESS, staticPropertyValues::room_mat_shininess);
 
-		glPushMatrix();
-		glScalef(5.0, 5.0, 5.0);
-		glutSolidCube(1.0);
-		glPopMatrix();
+		for (GameObject* obj : *game::gameObjects) {
+			obj->Render();
+		}
 	}
 
 	void reshape(int w, int h) {

@@ -16,4 +16,7 @@ namespace Initializer {
 
 	// Initializes all
 	bool InitializeAll(int argc, char** argv, const int& vWidth, const int& vHeight);
+
+	//Initializes game objects
+	bool initializeGameObjects();
 }

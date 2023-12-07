@@ -17,3 +17,7 @@ namespace staticPropertyValues {
 	static GLfloat light_ambient[] = { 0.2F, 0.2F, 0.2F, 1.0F };
 
 }
+
+namespace game {
+	static std::vector<GameObject*>* gameObjects = new std::vector<GameObject*>();
+}

@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Cube.h"
 
 struct MeshVertex
 {

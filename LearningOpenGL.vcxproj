@@ -173,6 +173,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CallbackFunctions.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Initializer.cpp" />
     <ClCompile Include="RoomMesh.cpp" />
@@ -180,11 +181,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackFunctions.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Initializer.h" />
     <ClInclude Include="RoomMesh.h" />
     <ClInclude Include="Serializer.h" />
-    <ClInclude Include="StaticPropertyValues.h" />
+    <ClInclude Include="Misc.h" />
     <ClInclude Include="VECTOR3D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,7 +6,9 @@ const int vHeight = 980;
 
 int main(int argc, char** argv)
 {	
-	Initializer::InitializeAll(argc, argv, vWidth, vHeight);
+	if (!Initializer::InitializeAll(argc, argv, vWidth, vHeight)) {
+		return 1; //change later maybe
+	}
 	glutMainLoop();
 	return 0;
 }
