@@ -176,6 +176,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Initializer.cpp" />
+    <ClCompile Include="Misc.cpp" />
     <ClCompile Include="RoomMesh.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>

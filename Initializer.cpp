@@ -62,8 +62,9 @@ namespace Initializer {
 
 	bool initializeGameObjects()
 	{
-		Cube* c = new Cube({ 1.0,1.0,1.0 }, { 1.0,1.0,1.0 }, 1.0, 0, 0, 0, 0);
-		game::gameObjects->push_back((GameObject*)c);
+		//example room objects
+		game::gameObjects.push_back((GameObject*)new Cube({ 1.0,1.0,1.0 }, { 1.0,1.0,1.0 }, 1.0, 0, 0, 0, 0));
+		game::gameObjects.push_back((GameObject*)new Cube({ 1.0,1.0,2.0 }, { 1.0,10.0,1.0 }, 1.0, 0, 0, 0, 0));
 		return true;
 	}
 
