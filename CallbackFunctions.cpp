@@ -3,6 +3,9 @@
 #define playerControl 1
 namespace callbackFunctions {
 
+	int frameCount; 
+	int currentTime;
+	int previousTime;
 	VECTOR3D eye = VECTOR3D(10.0, 1.0, 4.0);
 	GLfloat eyeX = 10.0;
 	GLfloat eyeY = 1.0;
@@ -43,6 +46,7 @@ namespace callbackFunctions {
 		glPopMatrix();
 		glutSwapBuffers();
 		trialMovement();
+		calculateFPS();
 	}
 
 	void drawRoom() {
@@ -50,7 +54,7 @@ namespace callbackFunctions {
 		glMaterialfv(GL_FRONT, GL_SPECULAR, staticPropertyValues::room_mat_specular);
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, staticPropertyValues::room_mat_diffuse);
 		glMaterialfv(GL_FRONT, GL_SHININESS, staticPropertyValues::room_mat_shininess);
-
+		int count = 0;
 		for (GameObject* obj : game::gameObjects) {
 			obj->Render();
 		}
@@ -79,7 +83,18 @@ namespace callbackFunctions {
 		keys[key] = true;
 		trialMovement();
 	}
+	void calculateFPS() {
+		frameCount++;
+		currentTime = glutGet(GLUT_ELAPSED_TIME);
+		int timeInterval = currentTime - previousTime;
 
+		if (timeInterval > 1000) {
+			float fps = frameCount / (timeInterval / 1000.0f);
+			std::cout << "rendering "  << fps << " fps (targetFps = 60)" << std::endl;
+			previousTime = currentTime;
+			frameCount = 0;
+		}
+	}
 	void trialMovement() {
 		if (!keys['w'] && !keys['a'] && !keys['s'] && !keys['d'] && !keys['z'] && !keys['x']) {
 			return;
