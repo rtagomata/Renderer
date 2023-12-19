@@ -18,6 +18,9 @@ public:
 	GameObject(std::string name) {
 		Read(name);
 	}
+	GameObject() {
+		//null constructor
+	}
 	void Write(std::string name) override;
 	void Read(std::string name) override;
 	virtual void Render()= 0;
