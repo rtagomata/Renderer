@@ -3,7 +3,7 @@
 void PhysicsComponent::init(VECTOR3D* pos)
 {
 	position = pos;
-	gravityAcceleration = -0.00001;
+	gravityAcceleration = -0.0000001;
 	gravityEnabled = false;
 	velocity = VECTOR3D(0.0, 0.0, 0.0);
 	acceleration = VECTOR3D(0.0, 0.0, 0.0);
