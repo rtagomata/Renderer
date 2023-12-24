@@ -23,5 +23,6 @@ namespace callbackFunctions {
 	void functionKeys(int key, int x, int y);
 	void mouse(int button, int state, int x, int y);
 	void mouseMotionHandler(int xMouse, int yMouse);
+	void animationHandler(int param);
 	void calculateFPS();
 }

@@ -49,6 +49,7 @@ namespace callbackFunctions {
 		glutSwapBuffers();
 		trialMovement();
 		calculateFPS();
+		glutTimerFunc(10, animationHandler, 0);
 	}
 
 	void drawRoom() {
@@ -84,7 +85,7 @@ namespace callbackFunctions {
 		keys[key] = true;
 		switch (key)
 		{
-		case 't':
+		case '1':
 			if (!recordFPS)
 			{
 				auto t = std::time(nullptr);
@@ -101,7 +102,7 @@ namespace callbackFunctions {
 
 			}
 			break;
-		case 'u':
+		case '2':
 			if (recordFPS)
 			{
 				f.close();
@@ -125,6 +126,7 @@ namespace callbackFunctions {
 			if (recordFPS)
 			{
 				f << fps << std::endl;
+				std::cout << "fps: " << fps << std::endl;
 			}
 			frameCount = 0;
 		}
@@ -209,6 +211,11 @@ namespace callbackFunctions {
 
 		}
 		glutPostRedisplay();   // Trigger a window redisplay
+	}
+
+	void animationHandler(int param)
+	{
+		glutPostRedisplay();
 	}
 
 	void mouse(int button, int state, int x, int y) {
