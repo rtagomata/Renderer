@@ -7,6 +7,11 @@ namespace callbackFunctions {
 	int frameCount; 
 	int currentTime;
 	int previousTime;
+	int countFPS;
+	bool recordFPS = false;
+	std::string newRecordFile;
+	std::ofstream f;
+	
 	//VECTOR3D eye = VECTOR3D(10.0, 1.0, 4.0);
 	//VECTOR3D center = VECTOR3D(0.0, 0.0, -1.0);
 
@@ -46,6 +51,7 @@ namespace callbackFunctions {
 		glutSwapBuffers();
 		trialMovement();
 		calculateFPS();
+		glutTimerFunc(10, animationHandler, 0);
 	}
 
 	void drawRoom() {
@@ -53,7 +59,6 @@ namespace callbackFunctions {
 		glMaterialfv(GL_FRONT, GL_SPECULAR, staticPropertyValues::room_mat_specular);
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, staticPropertyValues::room_mat_diffuse);
 		glMaterialfv(GL_FRONT, GL_SHININESS, staticPropertyValues::room_mat_shininess);
-		int count = 0;
 		for (GameObject* obj : game::gameObjects) {
 			obj->Render();
 		}
@@ -80,17 +85,51 @@ namespace callbackFunctions {
 	}
 	void keyboardDown(unsigned char key, int x, int y) { 
 		keys[key] = true;
+		switch (key)
+		{
+		case '1':
+			if (!recordFPS)
+			{
+				auto t = std::time(nullptr);
+				std::tm tm;
+
+				localtime_s(&tm, &t);
+
+				std::stringstream filenameStream;
+				filenameStream << "Records/" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S") << ".csv";
+				newRecordFile = filenameStream.str();
+				f.open(newRecordFile, std::ios::app);
+				f << "FPS" << std::endl;
+				recordFPS = true;
+
+			}
+			break;
+		case '2':
+			if (recordFPS)
+			{
+				f.close();
+				recordFPS = false;
+			}
+			break;
+		}
+
 		trialMovement();
 	}
 	void calculateFPS() {
 		frameCount++;
 		currentTime = glutGet(GLUT_ELAPSED_TIME);
 		int timeInterval = currentTime - previousTime;
-
+		
 		if (timeInterval > 1000) {
+
 			float fps = frameCount / (timeInterval / 1000.0f);
-			std::cout << "rendering "  << fps << " fps (targetFps = 60)" << std::endl;
+
 			previousTime = currentTime;
+			if (recordFPS)
+			{
+				f << fps << std::endl;
+				std::cout << "fps: " << fps << std::endl;
+			}
 			frameCount = 0;
 		}
 	}
@@ -160,6 +199,7 @@ namespace callbackFunctions {
 				*Camera::camera->eye -= u2;
 				break;
 			}
+
 		}
 
 		glutPostRedisplay();   // Trigger a window redisplay
@@ -173,6 +213,11 @@ namespace callbackFunctions {
 
 		}
 		glutPostRedisplay();   // Trigger a window redisplay
+	}
+
+	void animationHandler(int param)
+	{
+		glutPostRedisplay();
 	}
 
 	void mouse(int button, int state, int x, int y) {
