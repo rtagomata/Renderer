@@ -6,6 +6,8 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include "Camera.h"
+
 namespace callbackFunctions {
 	extern RoomMesh* roomMesh;
 	extern int currentButton;

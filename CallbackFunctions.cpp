@@ -1,4 +1,5 @@
 #include "CallbackFunctions.h"
+
 #define cameraControl 0
 #define playerControl 1
 namespace callbackFunctions {
@@ -10,18 +11,13 @@ namespace callbackFunctions {
 	bool recordFPS = false;
 	std::string newRecordFile;
 	std::ofstream f;
-	VECTOR3D eye = VECTOR3D(10.0, 1.0, 4.0);
-	GLfloat eyeX = 10.0;
-	GLfloat eyeY = 1.0;
-	GLfloat eyeZ = 4.0;
-	VECTOR3D center = VECTOR3D(0.0, 0.0, -1.0);
-	GLfloat centerX = 9.0;
-	GLfloat centerY = 0.0;
-	GLfloat centerZ = 3.0;
+	
+	//VECTOR3D eye = VECTOR3D(10.0, 1.0, 4.0);
+	//VECTOR3D center = VECTOR3D(0.0, 0.0, -1.0);
 
-	GLfloat upX = 0.0;
-	GLfloat upY = 1.0;
-	GLfloat upZ = 0.0;
+	//GLfloat upX = 0.0;
+	//GLfloat upY = 1.0;
+	//GLfloat upZ = 0.0;
 	VECTOR3D refToCam;
 	VECTOR3D yUnitVec = VECTOR3D(0.0, 1.0, 0.0);
 	VECTOR3D xUnitVec = VECTOR3D(1.0, 0.0, 0.0);
@@ -40,10 +36,12 @@ namespace callbackFunctions {
 	bool firstTimeMouseMovement = true;
 	bool keys[256];
 	int keyboardMode = cameraControl;
+	
 	void display(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-		gluLookAt(eye.x, eye.y, eye.z, center.x + eye.x, center.y + eye.y, center.z + eye.z, upX, upY, upZ);
+		//gluLookAt(eye.x, eye.y, eye.z, center.x + eye.x, center.y + eye.y, center.z + eye.z, upX, upY, upZ);
+		Camera::camera->look();
 		glPushMatrix();
 		drawRoom();
 		callbackFunctions::roomMesh->DrawMesh(16);
@@ -135,7 +133,7 @@ namespace callbackFunctions {
 		if (!keys['w'] && !keys['a'] && !keys['s'] && !keys['d'] && !keys['z'] && !keys['x']) {
 			return;
 		}
-		refToCam = center;
+		refToCam = *Camera::camera->center;
 		VECTOR3D u1 = refToCam.CrossProduct(yUnitVec);
 		VECTOR3D u2 = refToCam.CrossProduct(u1);
 		refToCam.Normalize();
@@ -145,22 +143,22 @@ namespace callbackFunctions {
 		u2.Normalize();
 		u2 *= 0.05;
 		if (keys['w']) {
-			eye += refToCam;
+			*Camera::camera->eye += refToCam;
 		}
 		if (keys['s']) {
-			eye -= refToCam;
+			*Camera::camera->eye -= refToCam;
 		}
 		if (keys['a']) {
-			eye -= u1;
+			*Camera::camera->eye -= u1;
 		}
 		if (keys['d']) {
-			eye += u1;
+			*Camera::camera->eye += u1;
 		}
 		if (keys['z']) {
-			eye += u2;
+			*Camera::camera->eye += u2;
 		}
 		if (keys['x']) {
-			eye -= u2;
+			*Camera::camera->eye -= u2;
 		}
 		glutPostRedisplay();   // Trigger a window redisplay
 	}
@@ -168,7 +166,7 @@ namespace callbackFunctions {
 	void keyboard(unsigned char key, int x, int y) {
 		if (keyboardMode == cameraControl)
 		{
-			refToCam = center - eye;
+			refToCam = *Camera::camera->center - *Camera::camera->eye;
 			VECTOR3D u1 = refToCam.CrossProduct(yUnitVec);
 			VECTOR3D u2 = refToCam.CrossProduct(u1);
 			refToCam.Normalize();
@@ -179,22 +177,22 @@ namespace callbackFunctions {
 			switch (key)
 			{
 			case 'w': 
-				eye += refToCam;
+				*Camera::camera->eye += refToCam;
 				break;
 			case 's':
-				eye -= refToCam;
+				*Camera::camera->eye -= refToCam;
 				break;
 			case 'a':
-				eye -= u1;
+				*Camera::camera->eye -= u1;
 				break;
 			case 'd':
-				eye += u1;
+				*Camera::camera->eye += u1;
 				break;
 			case 'z':
-				eye += u2;
+				*Camera::camera->eye += u2;
 				break;
 			case 'x':
-				eye -= u2;
+				*Camera::camera->eye -= u2;
 				break;
 			}
 
@@ -263,7 +261,7 @@ namespace callbackFunctions {
 			rotateAngle.y = sin(pitch);
 			rotateAngle.z = sin(yaw) * cos(pitch);
 			rotateAngle.Normalize();
-			center = rotateAngle;
+			*Camera::camera->center = rotateAngle;
 		}
 		previousX = xMouse;
 		previousY = yMouse;

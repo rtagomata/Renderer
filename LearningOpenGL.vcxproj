@@ -173,6 +173,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CallbackFunctions.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Initializer.cpp" />
@@ -182,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallbackFunctions.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Initializer.h" />
