@@ -62,6 +62,8 @@ namespace Initializer {
 
 	bool initializeGameObjects()
 	{
+		//init camera
+		Camera::makeCamera();
 		//example room objects
 		for (int i = 0; i < 100; i++)
 		{

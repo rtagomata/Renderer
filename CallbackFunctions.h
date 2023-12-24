@@ -1,5 +1,6 @@
 #pragma once
 #include "Misc.h"
+#include "Camera.h"
 
 namespace callbackFunctions {
 	extern RoomMesh* roomMesh;
