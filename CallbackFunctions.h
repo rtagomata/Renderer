@@ -1,6 +1,11 @@
 #pragma once
 #include "Misc.h"
-
+#include <fstream>
+#include <ctime>
+#include <chrono>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 namespace callbackFunctions {
 	extern RoomMesh* roomMesh;
 	extern int currentButton;
