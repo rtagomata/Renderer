@@ -1,4 +1,6 @@
 #include "Initializer.h"
+#include <cstdlib>
+
 namespace Initializer {
 	bool initGlut(int argc, char** argv, const int& vWidth, const int& vHeight) {
 		glutInit(&argc, argv);
@@ -66,12 +68,12 @@ namespace Initializer {
 		Camera::makeCamera();
 		game::gameObjects.push_back((GameObject*)Camera::camera);
 		//example room objects
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 1000; i++)
 		{
 			game::gameObjects.push_back((GameObject*)new Cube({ float((i % 100) - 50) * 2, float((i % 100) % 10) * 2 ,float((i / 100) - 50) * 2}, {0.1,0.1,0.1}, 1.0, 0, 0, 0, 0));
 			game::gameObjects[i]->physics.init(&(game::gameObjects[i]->Position));
 			game::gameObjects[i]->physics.gravityEnabled = true;
-			game::gameObjects[i]->Write("gobj\\object" + std::to_string(i) + ".bin");
+			//game::gameObjects[i]->Write("gobj\\object" + std::to_string(i) + ".bin");
 			//game::gameObjects.push_back((GameObject*) new Cube("gobj\\object" + std::to_string(i) + ".bin"));
 		}
 		return true;
@@ -110,6 +112,23 @@ namespace Initializer {
 			std::cout << "FAILED!\n";
 			return false;
 		}
+		std::cout << "Initializing game thread...";
+		try {
+			game::bkgdThread = std::thread(callbackFunctions::backgroundLogic);
+		}
+		catch (std::exception e) {
+			std::cout << "FAILED!\n";
+			std::cout << e.what() << "\n";
+			return false;
+		}
+		if (game::bkgdThread.joinable()) {
+			std::cout << "OK!\n";
+		}
+		else {
+			std::cout << "FAILED!\n";
+			return false;
+		}
+		
 		return true;
 	}
 }

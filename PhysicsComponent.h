@@ -12,6 +12,6 @@ public:
 	GLfloat mass;
 
 	void init(VECTOR3D* pos);
-	void calculate();
+	void calculate(GLfloat factor);
 	void applyForce(VECTOR3D force);
 };

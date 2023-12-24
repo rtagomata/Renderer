@@ -3,7 +3,6 @@
 #define cameraControl 0
 #define playerControl 1
 namespace callbackFunctions {
-
 	int frameCount; 
 	int currentTime;
 	int previousTime;
@@ -11,13 +10,7 @@ namespace callbackFunctions {
 	bool recordFPS = false;
 	std::string newRecordFile;
 	std::ofstream f;
-	
-	//VECTOR3D eye = VECTOR3D(10.0, 1.0, 4.0);
-	//VECTOR3D center = VECTOR3D(0.0, 0.0, -1.0);
 
-	//GLfloat upX = 0.0;
-	//GLfloat upY = 1.0;
-	//GLfloat upZ = 0.0;
 	VECTOR3D refToCam;
 	VECTOR3D yUnitVec = VECTOR3D(0.0, 1.0, 0.0);
 	VECTOR3D xUnitVec = VECTOR3D(1.0, 0.0, 0.0);
@@ -41,11 +34,6 @@ namespace callbackFunctions {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		Camera::camera->look();
-		for (int i = 0; i < game::gameObjects.size(); i++) {
-			if (game::gameObjects[i]->physics.enabled) {
-				game::gameObjects[i]->physics.calculate();
-			}
-		}
 		glPushMatrix();
 		drawRoom();
 		callbackFunctions::roomMesh->DrawMesh(16);
@@ -130,9 +118,24 @@ namespace callbackFunctions {
 			if (recordFPS)
 			{
 				f << fps << std::endl;
-				std::cout << "fps: " << fps << std::endl;
+				std::cout << "FPS: " << fps << std::endl;
 			}
 			frameCount = 0;
+		}
+	}
+	void backgroundLogic()
+	{
+		int cTime;
+		game::previousTime = glutGet(GLUT_ELAPSED_TIME);
+		while (game::running) {
+			cTime = glutGet(GLUT_ELAPSED_TIME);
+			GLfloat factor = (GLfloat)(cTime - game::previousTime) / (GLfloat)1000;
+			for (int i = 0; i < game::gameObjects.size(); i++) {
+				if (game::gameObjects[i]->physics.enabled) {
+					game::gameObjects[i]->physics.calculate(factor);
+				}
+			}
+			game::previousTime = cTime;
 		}
 	}
 	void trialMovement() {

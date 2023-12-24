@@ -1,18 +1,36 @@
 #pragma once
 #include "Misc.h"
 #include <fstream>
-#include <ctime>
-#include <chrono>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 #include "Camera.h"
 
 namespace callbackFunctions {
+	extern int frameCount;
+	extern int currentTime;
+	extern int previousTime;
+	extern int countFPS;
+	extern bool recordFPS;
+	extern std::string newRecordFile;
+	extern std::ofstream f;
+	extern VECTOR3D refToCam;
+	extern VECTOR3D yUnitVec;
+	extern VECTOR3D xUnitVec;
+	extern VECTOR3D nyUnitVec;
+	extern VECTOR3D nxUnitVec;
+	extern float yaw;
+	extern float pitch;
+	extern int previousX;
+	extern int previousY;
+	extern VECTOR3D rotateAngle;
 	extern RoomMesh* roomMesh;
 	extern int currentButton;
 	extern bool firstTimeMouseMovement;
 	extern bool keys[256];
+	extern int keyboardMode;
+
+
 	void trialMovement();
 	void display(void);
 	void drawRoom();
@@ -25,4 +43,6 @@ namespace callbackFunctions {
 	void mouseMotionHandler(int xMouse, int yMouse);
 	void animationHandler(int param);
 	void calculateFPS();
+
+	void backgroundLogic();
 }

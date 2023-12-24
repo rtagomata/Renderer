@@ -3,7 +3,7 @@
 void PhysicsComponent::init(VECTOR3D* pos)
 {
 	position = pos;
-	gravityAcceleration = -0.0000001;
+	gravityAcceleration = -0.000001;
 	gravityEnabled = false;
 	velocity = VECTOR3D(0.0, 0.0, 0.0);
 	acceleration = VECTOR3D(0.0, 0.0, 0.0);
@@ -11,11 +11,11 @@ void PhysicsComponent::init(VECTOR3D* pos)
 	enabled = true;
 }
 
-void PhysicsComponent::calculate() {
+void PhysicsComponent::calculate(GLfloat factor) {
 	if (gravityEnabled) {
-		velocity.y += gravityAcceleration;
+		velocity.y += gravityAcceleration * factor;
 	}
-	velocity += acceleration;
+	velocity += acceleration * factor;
 	*position += velocity;
 }
 

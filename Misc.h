@@ -1,4 +1,7 @@
 #pragma once
+#include <thread>
+#include <chrono>
+#include <ctime>
 
 #include "RoomMesh.h"
 
@@ -18,4 +21,7 @@ namespace staticPropertyValues {
 
 namespace game {
 	extern std::vector<GameObject*> gameObjects;
+	extern int previousTime;
+	extern std::thread bkgdThread;
+	extern bool running;
 }
