@@ -18,6 +18,7 @@ void GameObject::Write(std::string name) {
 	dataChunks.push_back({ &Specular, sizeof(GLfloat) });
 	dataChunks.push_back({ &Diffuse, sizeof(GLfloat) });
 	dataChunks.push_back({ &Shininess, sizeof(GLfloat) });
+	dataChunks.push_back({ &physics, sizeof(PhysicsComponent)});
 	Serialize(name);
 }
 void GameObject::Read(std::string name) {
@@ -30,5 +31,6 @@ void GameObject::Read(std::string name) {
 	dataChunks.push_back({ &Specular, sizeof(GLfloat) });
 	dataChunks.push_back({ &Diffuse, sizeof(GLfloat) });
 	dataChunks.push_back({ &Shininess, sizeof(GLfloat) });
+	dataChunks.push_back({ &physics, sizeof(PhysicsComponent) });
 	Deserialize(name);
 }

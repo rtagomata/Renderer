@@ -41,8 +41,10 @@ namespace callbackFunctions {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		Camera::camera->look();
-		if (((GameObject*)Camera::camera)->physics.enabled) {
-			((GameObject*)Camera::camera)->physics.calculate();
+		for (int i = 0; i < game::gameObjects.size(); i++) {
+			if (game::gameObjects[i]->physics.enabled) {
+				game::gameObjects[i]->physics.calculate();
+			}
 		}
 		glPushMatrix();
 		drawRoom();

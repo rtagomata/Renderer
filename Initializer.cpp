@@ -64,10 +64,13 @@ namespace Initializer {
 	{
 		//init camera
 		Camera::makeCamera();
+		game::gameObjects.push_back((GameObject*)Camera::camera);
 		//example room objects
 		for (int i = 0; i < 100; i++)
 		{
 			game::gameObjects.push_back((GameObject*)new Cube({ float((i % 100) - 50) * 2, float((i % 100) % 10) * 2 ,float((i / 100) - 50) * 2}, {0.1,0.1,0.1}, 1.0, 0, 0, 0, 0));
+			game::gameObjects[i]->physics.init(&(game::gameObjects[i]->Position));
+			game::gameObjects[i]->physics.gravityEnabled = true;
 			game::gameObjects[i]->Write("gobj\\object" + std::to_string(i) + ".bin");
 			//game::gameObjects.push_back((GameObject*) new Cube("gobj\\object" + std::to_string(i) + ".bin"));
 		}
