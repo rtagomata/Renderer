@@ -35,8 +35,10 @@ namespace callbackFunctions {
 	void display(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-		//gluLookAt(eye.x, eye.y, eye.z, center.x + eye.x, center.y + eye.y, center.z + eye.z, upX, upY, upZ);
 		Camera::camera->look();
+		if (((GameObject*)Camera::camera)->physics.enabled) {
+			((GameObject*)Camera::camera)->physics.calculate();
+		}
 		glPushMatrix();
 		drawRoom();
 		callbackFunctions::roomMesh->DrawMesh(16);

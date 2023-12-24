@@ -13,11 +13,7 @@ public:
 		gluLookAt(eye->x, eye->y, eye->z, center->x + eye->x, center->y + eye->y, center->z + eye->z, up->x, up->y, up->z);
 	}
 
-	static void makeCamera(VECTOR3D* eye = new VECTOR3D(10.0, 1.0, 4.0), VECTOR3D* center = new VECTOR3D(0.0, 0.0, -1.0), VECTOR3D* up = new VECTOR3D(0.0, 1.0, 0.0)) {
-		if (!camera) {
-			camera = new Camera(eye,center,up);
-		}
-	}
+	static void makeCamera(VECTOR3D* eye = new VECTOR3D(10.0, 1.0, 4.0), VECTOR3D* center = new VECTOR3D(0.0, 0.0, -1.0), VECTOR3D* up = new VECTOR3D(0.0, 1.0, 0.0));
 
 	void Render() override {}; //not useful
 private:

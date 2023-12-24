@@ -178,6 +178,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Initializer.cpp" />
     <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="RoomMesh.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -187,6 +188,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Initializer.h" />
+    <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="RoomMesh.h" />
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="Misc.h" />

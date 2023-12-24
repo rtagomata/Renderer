@@ -3,6 +3,15 @@
 
 class PhysicsComponent {
 public:
-	GLfloat gravityAcceleration;
+	bool enabled;
+	VECTOR3D* position;
+	GLfloat gravityAcceleration; //change to 3dvec?
+	bool gravityEnabled;
+	VECTOR3D velocity;
+	VECTOR3D acceleration;
+	GLfloat mass;
 
+	void init(VECTOR3D* pos);
+	void calculate();
+	void applyForce(VECTOR3D force);
 };

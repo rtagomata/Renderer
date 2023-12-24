@@ -5,7 +5,7 @@ GameObject::GameObject(VECTOR3D& Position, VECTOR3D& Scale, GLfloat& Size,
 	GLfloat Diffuse, GLfloat Shininess):
 	Position(Position), Scale(Scale), Size(Size),
 	Ambient(Ambient), Specular(Specular), Diffuse(Diffuse),
-	Shininess(Shininess)
+	Shininess(Shininess), physics(PhysicsComponent())
 {
 }
 
