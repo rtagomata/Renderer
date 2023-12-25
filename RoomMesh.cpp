@@ -1,4 +1,6 @@
 #pragma once
+
+#include "RoomMesh.h"
 #include <windows.h>
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -9,7 +11,6 @@
 #include <vector>
 #include "VECTOR3D.h"
 
-#include "RoomMesh.h"
 
 
 RoomMesh::RoomMesh(int maxMeshSize, float meshDim)
