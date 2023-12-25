@@ -131,8 +131,11 @@ namespace callbackFunctions {
 		while (game::running) {
 			cTime = glutGet(GLUT_ELAPSED_TIME);
 			GLfloat factor = (GLfloat)(cTime - game::previousTime) / (GLfloat)1000;
+			system("cls");
+			std::cout << factor << "\n";
+			system("pause");
 			for (int i = 0; i < game::gameObjects.size(); i++) {
-				std::cout << game::gameObjects.size() << std::endl;
+				//std::cout << game::gameObjects.size() << std::endl;
 				if (game::gameObjects[i]->physics.enabled) {
 					game::gameObjects[i]->physics.calculate(factor);
 				}
