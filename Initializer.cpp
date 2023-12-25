@@ -64,9 +64,6 @@ namespace Initializer {
 
 	bool initializeGameObjects()
 	{
-		//init camera
-		Camera::makeCamera();
-		game::gameObjects.push_back((GameObject*)Camera::camera);
 		//example room objects
 		for (int i = 0; i < 1000; i++)
 		{
@@ -76,6 +73,9 @@ namespace Initializer {
 			//game::gameObjects[i]->Write("gobj\\object" + std::to_string(i) + ".bin");
 			//game::gameObjects.push_back((GameObject*) new Cube("gobj\\object" + std::to_string(i) + ".bin"));
 		}
+		//init camera
+		Camera::makeCamera();
+		game::gameObjects.push_back((GameObject*)Camera::camera);
 		return true;
 	}
 
