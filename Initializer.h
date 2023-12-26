@@ -3,6 +3,7 @@
 
 #include "callbackFunctions.h"
 
+
 namespace Initializer {
 	// Initialize GLUT
 

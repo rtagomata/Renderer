@@ -43,13 +43,16 @@ namespace Initializer {
 		callbackFunctions::roomMesh = new RoomMesh(16, 32.0);
 		callbackFunctions::roomMesh->InitMesh(16, origin, 32.0, 32.0, dir1v, dir2v);
 
+
 		VECTOR3D ambient = VECTOR3D(0.0f, 0.05f, 0.0f);
 		VECTOR3D diffuse = VECTOR3D(0.4f, 0.8f, 0.4f);
 		VECTOR3D specular = VECTOR3D(0.04f, 0.04f, 0.04f);
 		float shininess = 0.2;
 		callbackFunctions::roomMesh->SetMaterial(ambient, diffuse, specular, shininess);
+
 		return true;
 	}
+
 
 	bool setCallbackFunctions() {
 		glutDisplayFunc(callbackFunctions::display);
@@ -65,7 +68,7 @@ namespace Initializer {
 	bool initializeGameObjects()
 	{
 		//example room objects
-		for (int i = 0; i < 100; i++)
+		/*for (int i = 0; i < 100; i++)
 		{
 			game::gameObjects.push_back((GameObject*)new Cube({ float((i % 100) - 50) * 2, float((i % 100) % 10) * 2 ,float((i / 100) - 50) * 2}, {0.1,0.1,0.1}, 1.0, 0, 0, 0, 0));
 			game::gameObjects[i]->physics.init(&(game::gameObjects[i]->Position));
@@ -73,7 +76,23 @@ namespace Initializer {
 			//game::gameObjects[i]->Write("gobj\\object" + std::to_string(i) + ".bin");
 			//game::gameObjects.push_back((GameObject*) new Cube("gobj\\object" + std::to_string(i) + ".bin"));
 		}
-		//init camera
+		//init */
+
+		VECTOR3D origin = VECTOR3D(-16.0f, 0.0f, 16.0f);
+		callbackFunctions::roomMesh = new RoomMesh(16, 32.0);
+		callbackFunctions::roomMesh->InitMesh(16, origin, 32.0, 32.0);
+		origin = VECTOR3D(0.0f, 1.0f, 0.0f);
+		Cube* sample = new Cube(4.0, 8.0);
+		sample->InitMesh(4, origin, 8.0, 8.0);
+		game::gameObjects.push_back((GameObject*)sample);
+
+		/*
+		VECTOR3D ambient = VECTOR3D(0.0f, 0.05f, 0.0f);
+		VECTOR3D diffuse = VECTOR3D(0.4f, 0.8f, 0.4f);
+		VECTOR3D specular = VECTOR3D(0.04f, 0.04f, 0.04f);
+		float shininess = 0.2;
+		callbackFunctions::roomMesh->SetMaterial(ambient, diffuse, specular, shininess);
+		*/
 		Camera::makeCamera();
 		game::gameObjects.push_back((GameObject*)Camera::camera);
 		return true;
@@ -128,7 +147,7 @@ namespace Initializer {
 			std::cout << "FAILED!\n";
 			return false;
 		}
-		
+
 		return true;
 	}
 }
