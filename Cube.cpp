@@ -1,9 +1,9 @@
 #include "Cube.h"
 
-Cube::Cube(VECTOR3D Position, VECTOR3D Scale, GLfloat Size, GLfloat Ambient, GLfloat Specular, GLfloat Diffuse, GLfloat Shininess) :
-	GameObject(Position, Scale, Size)
+Cube::Cube(VECTOR3D Position, VECTOR3D Scale, GLfloat Size, GLfloat Ambient, GLfloat Specular, GLfloat Diffuse, GLfloat Shininess): 
+	GameObject(Position,Scale,Size) 
 {
-
+	
 }
 
 Cube::Cube(int maxMeshSize, float meshDim)
@@ -53,13 +53,13 @@ void Cube::SetMaterial(VECTOR3D ambient, VECTOR3D diffuse, VECTOR3D specular, do
 
 bool Cube::CreateMemory()
 {
-	vertices = new MeshVertex[(maxMeshSize + 1) * (maxMeshSize + 1)];
+	vertices = new MeshVertex[(maxMeshSize + 1) * (maxMeshSize + 1) * 2];
 	if (!vertices)
 	{
 		return false;
 	}
 
-	quads = new MeshQuad[maxMeshSize * maxMeshSize];
+	quads = new MeshQuad[maxMeshSize * maxMeshSize * 2];
 	if (!quads)
 	{
 		return false;
@@ -91,9 +91,9 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 	VECTOR3D meshpt;
 
-	numVertices = (meshSize + 1) * (meshSize + 1);
+	numVertices = (meshSize + 1) * (meshSize + 1) * 2;
 
-	o.Set(origin.x - meshLength / 2, origin.y - meshSize / 2, origin.z - meshWidth);
+	o.Set(origin.x, origin.y, origin.z);
 
 	for (int i = 0; i < meshSize + 1; i++)
 	{
@@ -108,8 +108,24 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		}
 		o += v2;
 	}
+	o.Set(origin.x, origin.y, origin.z);
 
-	numQuads = (meshSize) * (meshSize);
+	v2 = v2.CrossProduct(VECTOR3D(-1, 1, 0));
+	for (int i = 0; i < meshSize + 1; i++)
+	{
+		for (int j = 0; j < meshSize + 1; j++)
+		{
+			meshpt.x = o.x + j * v1.x;
+			meshpt.y = o.y + j * v1.y;
+			meshpt.z = o.z + j * v1.z;
+
+			vertices[currentVertex].position.Set(meshpt.x, meshpt.y, meshpt.z);
+			currentVertex++;
+		}
+		o += v2;
+	}
+
+	numQuads = (meshSize) * (meshSize) * 2;
 	int currentQuad = 0;
 
 	for (int j = 0; j < meshSize; j++)
@@ -120,6 +136,17 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 			quads[currentQuad].vertices[1] = &vertices[j * (meshSize + 1) + k + 1];
 			quads[currentQuad].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + 1];
 			quads[currentQuad].vertices[3] = &vertices[(j + 1) * (meshSize + 1) + k];
+			currentQuad++;
+		}
+	}
+	for (int j = 0; j < meshSize; j++)
+	{
+		for (int k = 0; k < meshSize; k++)
+		{
+			quads[currentQuad].vertices[0] = &vertices[j * (meshSize + 1) + k + meshSize * meshSize];
+			quads[currentQuad].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + meshSize * meshSize];
+			quads[currentQuad].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + meshSize * meshSize];
+			quads[currentQuad].vertices[3] = &vertices[(j + 1) * (meshSize + 1) + k  + meshSize * meshSize];
 			currentQuad++;
 		}
 	}
@@ -138,7 +165,7 @@ void Cube::DrawMesh()
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-	for (int j = 0; j < meshSize; j++)
+	for (int j = 0; j < meshSize * 2; j++)
 	{
 		for (int k = 0; k < meshSize; k++)
 		{
@@ -201,7 +228,7 @@ void Cube::ComputeNormals()
 {
 	int currentQuad = 0;
 
-	for (int j = 0; j < this->maxMeshSize; j++)
+	for (int j = 0; j < this->maxMeshSize * 2; j++)
 	{
 		for (int k = 0; k < this->maxMeshSize; k++)
 		{
