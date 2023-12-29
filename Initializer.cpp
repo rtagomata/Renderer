@@ -82,8 +82,17 @@ namespace Initializer {
 		callbackFunctions::roomMesh = new RoomMesh(16, 32.0);
 		callbackFunctions::roomMesh->InitMesh(16, origin, 32.0, 32.0);
 		origin = VECTOR3D(0.0f, 5.0f, 0.0f);
+
+
+		VECTOR3D ambient = VECTOR3D(0.0f, 0.05f, 0.0f);
+		VECTOR3D diffuse = VECTOR3D(0.4f, 0.8f, 0.4f);
+		VECTOR3D specular = VECTOR3D(0.04f, 0.04f, 0.04f);
+
+
+		float shininess = 0.2;
 		Cube* sample = new Cube(4.0, 8.0);
 		sample->InitMesh(4, origin, 8.0, 8.0);
+		sample->SetMaterial(ambient, diffuse, specular, shininess);
 		game::gameObjects.push_back((GameObject*)sample);
 
 		/*
