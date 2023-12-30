@@ -54,14 +54,14 @@ void Cube::SetMaterial(VECTOR3D ambient, VECTOR3D diffuse, VECTOR3D specular, do
 
 bool Cube::CreateMemory()
 {
-	vertices = new MeshVertex[(maxMeshSize + 1) * (maxMeshSize + 1) * 2];
+	vertices = new MeshVertex[(maxMeshSize + 1) * (maxMeshSize + 1) * 6];
 	if (!vertices)
 	{
 		return false;
 	}
 
-	tris1 = new MeshTriangle[maxMeshSize * maxMeshSize * 2];
-	tris2 = new MeshTriangle[maxMeshSize * maxMeshSize * 2];
+	tris1 = new MeshTriangle[maxMeshSize * maxMeshSize * 6];
+	tris2 = new MeshTriangle[maxMeshSize * maxMeshSize * 6];
 	if (!tris1)
 	{
 		return false;
@@ -77,32 +77,36 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 {
 	m_meshSize = meshSize;
 	VECTOR3D o;
+	VECTOR3D o2;
+
 	int currentVertex = 0;
 	double sf1, sf2, sf3;
 
 	VECTOR3D v1, v2, v3, v4;
 
+
 	v1.x = dir1.x;
 	v1.y = dir1.y;
 	v1.z = dir1.z;
-
+	
+	VECTOR3D dir3 = VECTOR3D(-v1.y, v1.x, v1.z);
 	sf1 = meshLength / meshSize;
 	v1 *= sf1;
 
 	v2.x = dir2.x;
 	v2.y = dir2.y;
 	v2.z = dir2.z;
+
+	VECTOR3D dir4 = VECTOR3D(-v2.y, v2.x, v2.z);
 	sf2 = meshWidth / meshSize;
 	v2 *= sf2;
 
-	VECTOR3D dir3 = VECTOR3D(-v1.y, v1.x, v1.z);
 	v3.x = dir3.x;
 	v3.y = dir3.y;
 	v3.z = dir3.z;
 	sf3 = meshHeight / meshSize;
 	v3 *= sf3;
 
-	VECTOR3D dir4 = VECTOR3D(-v2.y, v2.x, v2.z);
 	VECTOR3D meshpt;
 
 	numVertices = (meshSize + 1) * (meshSize + 1) * 2;
@@ -124,6 +128,7 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		}
 		o += v2;
 	}
+	VECTOR3D origin2 = vertices[currentVertex - 1].position;
 
 	o.Set(origin.x, origin.y, origin.z);
 	std::cout << "-----------------" << std::endl;
@@ -141,8 +146,89 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		}
 		o += v3;
 	}
+
+
+
+	o.Set(origin.x, origin.y, origin.z);
+	std::cout << "-----------------" << std::endl;
+	for (int i = 0; i < meshSize + 1; i++)
+	{
+		for (int j = 0; j < meshSize + 1; j++)
+		{
+			meshpt.x = o.x + j * v2.x;
+			meshpt.y = o.y + j * v2.y;
+			meshpt.z = o.z + j * v2.z;
+
+			vertices[currentVertex].position.Set(meshpt.x, meshpt.y, meshpt.z);
+			std::cout << meshpt.x << ":" << meshpt.y << ":" << meshpt.z << std::endl;
+			currentVertex++;
+		}
+		o += v3;
+	}
+
+	o2.Set(origin2.x, origin2.y, origin2.z);
+	std::cout << origin2.x << ":" << origin2.y << ":" << origin2.z << std::endl;
+	for (int i = 0; i < meshSize + 1; i++)
+	{
+		for (int j = 0; j < meshSize + 1; j++)
+		{
+			meshpt.x = o2.x + j * -v2.x;
+			meshpt.y = o2.y + j * -v2.y;
+			meshpt.z = o2.z + j * -v2.z;
+
+			vertices[currentVertex].position.Set(meshpt.x, meshpt.y, meshpt.z);
+
+			std::cout << meshpt.x << ":" << meshpt.y << ":" << meshpt.z << std::endl;
+			currentVertex++;
+		}
+		o2 += v3;
+	}
+
+	o2.Set(origin2.x, origin2.y, origin2.z);
+	std::cout << origin2.x << ":" << origin2.y << ":" << origin2.z << std::endl;
+	for (int i = 0; i < meshSize + 1; i++)
+	{
+		for (int j = 0; j < meshSize + 1; j++)
+		{
+			meshpt.x = o2.x + j * -v1.x;
+			meshpt.y = o2.y + j * -v1.y;
+			meshpt.z = o2.z + j * -v1.z;
+
+			vertices[currentVertex].position.Set(meshpt.x, meshpt.y, meshpt.z);
+
+			std::cout << meshpt.x << ":" << meshpt.y << ":" << meshpt.z << std::endl;
+			currentVertex++;
+		}
+		o2 += v3;
+	}
+
+	VECTOR3D origin3 = vertices[(meshSize + 1) * (meshSize + 1) * 2 - meshSize - 1].position;
+	o.Set(origin3.x, origin3.y, origin3.z);
+
+	for (int i = 0; i < meshSize + 1; i++)
+	{
+		for (int j = 0; j < meshSize + 1; j++)
+		{
+			meshpt.x = o.x + j * v1.x;
+			meshpt.y = o.y + j * v1.y;
+			meshpt.z = o.z + j * v1.z;
+
+			vertices[currentVertex].position.Set(meshpt.x, meshpt.y, meshpt.z);
+
+			std::cout << meshpt.x << ":" << meshpt.y << ":" << meshpt.z << std::endl;
+			currentVertex++;
+		}
+		o += v2;
+	}
+
+
+
+
+
+
+
 	std::cout << "MeshSize squared " << meshSize * meshSize << std::endl;
-	numTris = (meshSize) * (meshSize) * 2;
+	numTris = (meshSize) * (meshSize) * 4;
 	int currentTri = 0;
 
 	for (int j = 0; j < meshSize; j++)
@@ -160,18 +246,82 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		}
 
 	}
-	int offset = currentVertex / 2;
+	int offset = (meshSize + 1)* (meshSize + 1);
 	for (int j = 0; j < meshSize; j++)
 	{
 		for (int k = 0; k < meshSize; k++)
 		{
 			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
-			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset ];
+			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset];
 			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset];
 			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset];
 			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset];
 			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset];
 			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset];
+			currentTri++;
+		}
+
+	}
+	for (int j = 0; j < meshSize; j++)
+	{
+		for (int k = 0; k < meshSize; k++)
+		{
+			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
+			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 2];
+			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 2];
+			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 2];
+			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 2];
+			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 2];
+			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 2];
+			currentTri++;
+		}
+
+	}
+
+	for (int j = 0; j < meshSize; j++)
+	{
+		for (int k = 0; k < meshSize; k++)
+		{
+			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
+			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 3];
+			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 3];
+			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 3];
+			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 3];
+			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 3];
+			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 3];
+			currentTri++;
+		}
+
+	}
+
+
+	for (int j = 0; j < meshSize; j++)
+	{
+		for (int k = 0; k < meshSize; k++)
+		{
+			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
+			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 4];
+			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 4];
+			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 4];
+			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 4];
+			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 4];
+			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 4];
+			currentTri++;
+		}
+
+	}
+
+	for (int j = 0; j < meshSize; j++)
+	{
+		for (int k = 0; k < meshSize; k++)
+		{
+			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
+			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 5];
+			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 5];
+			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 5];
+			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 5];
+			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 5];
+			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 5];
 			currentTri++;
 		}
 
@@ -194,7 +344,7 @@ void Cube::DrawMesh()
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-	for (int j = 0; j < meshSize * 2; j++)
+	for (int j = 0; j < meshSize * 6; j++)
 	{
 		for (int k = 0; k < meshSize; k++)
 		{
@@ -280,6 +430,7 @@ void Cube::FreeMemory()
 	if (tris2)
 		delete[] tris2;
 	tris2 = NULL;
+
 	numTris= 0;
 }
 
@@ -289,7 +440,7 @@ void Cube::ComputeNormals()
 
 	for (int j = 0; j < m_meshSize; j++)
 	{
-		for (int k = 0; k < m_meshSize * 2; k++)
+		for (int k = 0; k < m_meshSize * 6; k++)
 		{
 			VECTOR3D n0, n1, n2, n3, e0, e1, e2, ne0, ne1, ne2;
 
