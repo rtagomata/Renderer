@@ -25,6 +25,7 @@ public:
 	MeshTriangle* tris2;
 
 
+
 	int numFacesDrawn;
 
 	bool CreateMemory();
