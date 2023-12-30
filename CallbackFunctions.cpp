@@ -169,6 +169,7 @@ namespace callbackFunctions {
 		if (keys['x']) {
 			*Camera::camera->eye -= u2;
 		}
+		std::cout << "X: " << Camera::camera->eye->x << "   Z: " << Camera::camera->eye->z << std::endl;
 		glutPostRedisplay();   // Trigger a window redisplay
 	}
 

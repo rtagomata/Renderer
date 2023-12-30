@@ -11,8 +11,9 @@ Cube::Cube(int maxMeshSize, float meshDim)
 	minMeshSize = 1;
 	numVertices = 0;
 	vertices = NULL;
-	numQuads = 0;
-	quads = NULL;
+	numTris = 0;
+	tris1 = NULL;
+	tris2 = NULL;
 	numFacesDrawn = 0;
 
 	this->maxMeshSize = maxMeshSize < minMeshSize ? minMeshSize : maxMeshSize;
@@ -59,8 +60,13 @@ bool Cube::CreateMemory()
 		return false;
 	}
 
-	quads = new MeshQuad[maxMeshSize * maxMeshSize * 2];
-	if (!quads)
+	tris1 = new MeshTriangle[maxMeshSize * maxMeshSize ];
+	tris2 = new MeshTriangle[maxMeshSize * maxMeshSize ];
+	if (!tris1)
+	{
+		return false;
+	}
+	if (!tris2)
 	{
 		return false;
 	}
@@ -72,7 +78,7 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 	m_meshSize = meshSize;
 	VECTOR3D o;
 	int currentVertex = 0;
-	double sf1, sf2;
+	double sf1, sf2, sf3;
 
 	VECTOR3D v1, v2;
 
@@ -89,6 +95,14 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 	sf2 = meshWidth / meshSize;
 	v2 *= sf2;
 
+	VECTOR3D v3;
+	VECTOR3D dir3 = VECTOR3D(0, 1, 0);
+	v3.x = dir3.x;
+	v3.y = dir3.y;
+	v3.z = dir3.z;
+	sf3 = meshWidth / meshSize;
+	v3 *= sf3;
+
 	VECTOR3D meshpt;
 
 	numVertices = (meshSize + 1) * (meshSize + 1) * 2;
@@ -104,13 +118,15 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 			meshpt.z = o.z + j * v1.z;
 
 			vertices[currentVertex].position.Set(meshpt.x, meshpt.y, meshpt.z);
+
+			std::cout << meshpt.x << ":" << meshpt.y << ":" << meshpt.z << std::endl;
 			currentVertex++;
 		}
 		o += v2;
 	}
-	o.Set(origin.x, origin.y, origin.z);
 
-	v2 = v2.CrossProduct(VECTOR3D(-1, 1, 0));
+	o.Set(origin.x, origin.y, origin.z);
+	std::cout << "-----------------" << std::endl;
 	for (int i = 0; i < meshSize + 1; i++)
 	{
 		for (int j = 0; j < meshSize + 1; j++)
@@ -120,36 +136,31 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 			meshpt.z = o.z + j * v1.z;
 
 			vertices[currentVertex].position.Set(meshpt.x, meshpt.y, meshpt.z);
+			std::cout << meshpt.x << ":" << meshpt.y << ":" << meshpt.z << std::endl;
 			currentVertex++;
 		}
-		o += v2;
+		o += v3;
 	}
 
-	numQuads = (meshSize) * (meshSize) * 2;
-	int currentQuad = 0;
+	numTris = (meshSize) * (meshSize) * 2;
+	int currentTri = 0;
 
 	for (int j = 0; j < meshSize; j++)
 	{
 		for (int k = 0; k < meshSize; k++)
 		{
-			quads[currentQuad].vertices[0] = &vertices[j * (meshSize + 1) + k];
-			quads[currentQuad].vertices[1] = &vertices[j * (meshSize + 1) + k + 1];
-			quads[currentQuad].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + 1];
-			quads[currentQuad].vertices[3] = &vertices[(j + 1) * (meshSize + 1) + k];
-			currentQuad++;
+			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
+			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k];
+			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1];
+			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k];
+			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1];
+			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1];
+			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k];
+			currentTri++;
 		}
+		
 	}
-	for (int j = 0; j < meshSize; j++)
-	{
-		for (int k = 0; k < meshSize; k++)
-		{
-			quads[currentQuad].vertices[0] = &vertices[j * (meshSize + 1) + k + meshSize * meshSize];
-			quads[currentQuad].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + meshSize * meshSize];
-			quads[currentQuad].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + meshSize * meshSize];
-			quads[currentQuad].vertices[3] = &vertices[(j + 1) * (meshSize + 1) + k  + meshSize * meshSize];
-			currentQuad++;
-		}
-	}
+
 
 	this->ComputeNormals();
 
@@ -158,51 +169,77 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 void Cube::DrawMesh()
 {
-	int currentQuad = 0;
+	int currentTri = 0;
 	int meshSize = m_meshSize;
 	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-	for (int j = 0; j < meshSize * 2; j++)
+	for (int j = 0; j < meshSize; j++)
 	{
 		for (int k = 0; k < meshSize; k++)
 		{
-			glBegin(GL_QUADS);
+			glBegin(GL_TRIANGLES);
 
-			glNormal3f(quads[currentQuad].vertices[0]->normal.x,
-				quads[currentQuad].vertices[0]->normal.y,
-				quads[currentQuad].vertices[0]->normal.z);
-			glVertex3f(quads[currentQuad].vertices[0]->position.x,
-				quads[currentQuad].vertices[0]->position.y,
-				quads[currentQuad].vertices[0]->position.z);
 
-			glNormal3f(quads[currentQuad].vertices[1]->normal.x,
-				quads[currentQuad].vertices[1]->normal.y,
-				quads[currentQuad].vertices[1]->normal.z);
 
-			glVertex3f(quads[currentQuad].vertices[1]->position.x,
-				quads[currentQuad].vertices[1]->position.y,
-				quads[currentQuad].vertices[1]->position.z);
+			glNormal3f(tris1[currentTri].vertices[0]->normal.x,
+				tris1[currentTri].vertices[0]->normal.y,
+				tris1[currentTri].vertices[0]->normal.z);
+			glVertex3f(tris1[currentTri].vertices[0]->position.x,
+				tris1[currentTri].vertices[0]->position.y,
+				tris1[currentTri].vertices[0]->position.z);
 
-			glNormal3f(quads[currentQuad].vertices[2]->normal.x,
-				quads[currentQuad].vertices[2]->normal.y,
-				quads[currentQuad].vertices[2]->normal.z);
+			glNormal3f(tris1[currentTri].vertices[1]->normal.x,
+				tris1[currentTri].vertices[1]->normal.y,
+				tris1[currentTri].vertices[1]->normal.z);
 
-			glVertex3f(quads[currentQuad].vertices[2]->position.x,
-				quads[currentQuad].vertices[2]->position.y,
-				quads[currentQuad].vertices[2]->position.z);
+			glVertex3f(tris1[currentTri].vertices[1]->position.x,
+				tris1[currentTri].vertices[1]->position.y,
+				tris1[currentTri].vertices[1]->position.z);
 
-			glNormal3f(quads[currentQuad].vertices[3]->normal.x,
-				quads[currentQuad].vertices[3]->normal.y,
-				quads[currentQuad].vertices[3]->normal.z);
+			glNormal3f(tris1[currentTri].vertices[2]->normal.x,
+				tris1[currentTri].vertices[2]->normal.y,
+				tris1[currentTri].vertices[2]->normal.z);
 
-			glVertex3f(quads[currentQuad].vertices[3]->position.x,
-				quads[currentQuad].vertices[3]->position.y,
-				quads[currentQuad].vertices[3]->position.z);
+			glVertex3f(tris1[currentTri].vertices[2]->position.x,
+				tris1[currentTri].vertices[2]->position.y,
+				tris1[currentTri].vertices[2]->position.z);
+
+
 			glEnd();
-			currentQuad++;
+
+			glBegin(GL_TRIANGLES);
+
+
+
+			glNormal3f(tris2[currentTri].vertices[0]->normal.x,
+				tris2[currentTri].vertices[0]->normal.y,
+				tris2[currentTri].vertices[0]->normal.z);
+			glVertex3f(tris2[currentTri].vertices[0]->position.x,
+				tris2[currentTri].vertices[0]->position.y,
+				tris2[currentTri].vertices[0]->position.z);
+
+			glNormal3f(tris2[currentTri].vertices[1]->normal.x,
+				tris2[currentTri].vertices[1]->normal.y,
+				tris2[currentTri].vertices[1]->normal.z);
+
+			glVertex3f(tris2[currentTri].vertices[1]->position.x,
+				tris2[currentTri].vertices[1]->position.y,
+				tris2[currentTri].vertices[1]->position.z);
+
+			glNormal3f(tris2[currentTri].vertices[2]->normal.x,
+				tris2[currentTri].vertices[2]->normal.y,
+				tris2[currentTri].vertices[2]->normal.z);
+
+			glVertex3f(tris2[currentTri].vertices[2]->position.x,
+				tris2[currentTri].vertices[2]->position.y,
+				tris2[currentTri].vertices[2]->position.z);
+
+
+			glEnd();
+			currentTri++;
 		}
 	}
 }
@@ -218,30 +255,31 @@ void Cube::FreeMemory()
 	vertices = NULL;
 	numVertices = 0;
 
-	if (quads)
-		delete[] quads;
-	quads = NULL;
-	numQuads = 0;
+	if (tris1)
+		delete[] tris1;
+	tris1 = NULL;
+	if (tris2)
+		delete[] tris2;
+	tris2 = NULL;
+	numTris= 0;
 }
 
 void Cube::ComputeNormals()
 {
-	int currentQuad = 0;
+	int currentTri = 0;
 
-	for (int j = 0; j < this->maxMeshSize * 2; j++)
+	for (int j = 0; j < m_meshSize; j++)
 	{
-		for (int k = 0; k < this->maxMeshSize; k++)
+		for (int k = 0; k < m_meshSize; k++)
 		{
 			VECTOR3D n0, n1, n2, n3, e0, e1, e2, e3, ne0, ne1, ne2, ne3;
 
-			quads[currentQuad].vertices[0]->normal.LoadZero();
-			quads[currentQuad].vertices[1]->normal.LoadZero();
-			quads[currentQuad].vertices[2]->normal.LoadZero();
-			quads[currentQuad].vertices[3]->normal.LoadZero();
-			e0 = quads[currentQuad].vertices[1]->position - quads[currentQuad].vertices[0]->position;
-			e1 = quads[currentQuad].vertices[2]->position - quads[currentQuad].vertices[1]->position;
-			e2 = quads[currentQuad].vertices[3]->position - quads[currentQuad].vertices[2]->position;
-			e3 = quads[currentQuad].vertices[0]->position - quads[currentQuad].vertices[3]->position;
+			tris1[currentTri].vertices[0]->normal.LoadZero();
+			tris1[currentTri].vertices[1]->normal.LoadZero();
+			tris1[currentTri].vertices[2]->normal.LoadZero();
+			e0 = tris1[currentTri].vertices[1]->position - tris1[currentTri].vertices[2]->position;
+			e1 = tris1[currentTri].vertices[2]->position - tris1[currentTri].vertices[0]->position;
+			e2 = tris1[currentTri].vertices[0]->position - tris1[currentTri].vertices[1]->position;
 			e0.Normalize();
 			e1.Normalize();
 			e2.Normalize();
@@ -249,26 +287,53 @@ void Cube::ComputeNormals()
 
 			n0 = e0.CrossProduct(-e3);
 			n0.Normalize();
-			quads[currentQuad].vertices[0]->normal += n0;
+			tris1[currentTri].vertices[0]->normal += n0;
 
 			n1 = e1.CrossProduct(-e0);
 			n1.Normalize();
-			quads[currentQuad].vertices[1]->normal += n1;
+			tris1[currentTri].vertices[1]->normal += n1;
 
 			n2 = e2.CrossProduct(-e1);
 			n2.Normalize();
-			quads[currentQuad].vertices[2]->normal += n2;
+			tris1[currentTri].vertices[2]->normal += n2;
 
 			n3 = e3.CrossProduct(-e2);
 			n3.Normalize();
-			quads[currentQuad].vertices[3]->normal += n3;
+			tris1[currentTri].vertices[0]->normal.Normalize();
+			tris1[currentTri].vertices[1]->normal.Normalize();
+			tris1[currentTri].vertices[2]->normal.Normalize();
 
-			quads[currentQuad].vertices[0]->normal.Normalize();
-			quads[currentQuad].vertices[1]->normal.Normalize();
-			quads[currentQuad].vertices[2]->normal.Normalize();
-			quads[currentQuad].vertices[3]->normal.Normalize();
 
-			currentQuad++;
+			tris2[currentTri].vertices[0]->normal.LoadZero();
+			tris2[currentTri].vertices[1]->normal.LoadZero();
+			tris2[currentTri].vertices[2]->normal.LoadZero();
+			e0 = tris2[currentTri].vertices[1]->position - tris2[currentTri].vertices[2]->position;
+			e1 = tris2[currentTri].vertices[2]->position - tris2[currentTri].vertices[0]->position;
+			e2 = tris2[currentTri].vertices[0]->position - tris2[currentTri].vertices[1]->position;
+			e0.Normalize();
+			e1.Normalize();
+			e2.Normalize();
+			e3.Normalize();
+
+			n0 = e0.CrossProduct(-e3);
+			n0.Normalize();
+			tris2[currentTri].vertices[0]->normal += n0;
+
+			n1 = e1.CrossProduct(-e0);
+			n1.Normalize();
+			tris2[currentTri].vertices[1]->normal += n1;
+
+			n2 = e2.CrossProduct(-e1);
+			n2.Normalize();
+			tris2[currentTri].vertices[2]->normal += n2;
+
+			n3 = e3.CrossProduct(-e2);
+			n3.Normalize();
+			tris2[currentTri].vertices[0]->normal.Normalize();
+			tris2[currentTri].vertices[1]->normal.Normalize();
+			tris2[currentTri].vertices[2]->normal.Normalize();
+
+			currentTri++;
 		}
 	}
 }

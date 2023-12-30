@@ -20,8 +20,10 @@ public:
 	int numVertices;
 	MeshVertex* vertices;
 
-	int numQuads;
-	MeshQuad* quads;
+	int numTris;
+	MeshTriangle* tris1;
+	MeshTriangle* tris2;
+
 
 	int numFacesDrawn;
 

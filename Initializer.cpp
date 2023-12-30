@@ -81,7 +81,7 @@ namespace Initializer {
 		VECTOR3D origin = VECTOR3D(-16.0f, 0.0f, 16.0f);
 		callbackFunctions::roomMesh = new RoomMesh(16, 32.0);
 		callbackFunctions::roomMesh->InitMesh(16, origin, 32.0, 32.0);
-		origin = VECTOR3D(0.0f, 5.0f, 0.0f);
+		origin = VECTOR3D(5.0f, 5.0f, 5.0f);
 
 
 		VECTOR3D ambient = VECTOR3D(0.0f, 0.05f, 0.0f);

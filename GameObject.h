@@ -15,6 +15,11 @@ struct MeshQuad
 	MeshVertex* vertices[4];
 };
 
+struct MeshTriangle
+{
+	MeshVertex* vertices[3];
+};
+
 class GameObject : Serializer {
 public:
 	//FreeMemory();
