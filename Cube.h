@@ -46,7 +46,7 @@ public:
 
 	}
 
-	bool InitMesh(int meshSize, VECTOR3D origin, double meshLength, double meshWidth, VECTOR3D dir1 = VECTOR3D(1.0f, 0.0f, 0.0f), VECTOR3D dir2 = VECTOR3D(0.0f, 0.0f, -1.0f));
+	bool InitMesh(int meshSize, VECTOR3D origin, double meshLength, double meshWidth, double meshHeight, VECTOR3D dir1 = VECTOR3D(1.0f, 0.0f, 0.0f), VECTOR3D dir2 = VECTOR3D(0.0f, 0.0f, -1.0f));
 	void DrawMesh();
 	void UpdateMesh();
 	void SetMaterial(VECTOR3D ambient, VECTOR3D diffuse, VECTOR3D specular, double shininess);

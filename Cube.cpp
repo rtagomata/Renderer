@@ -60,8 +60,8 @@ bool Cube::CreateMemory()
 		return false;
 	}
 
-	tris1 = new MeshTriangle[maxMeshSize * maxMeshSize ];
-	tris2 = new MeshTriangle[maxMeshSize * maxMeshSize ];
+	tris1 = new MeshTriangle[maxMeshSize * maxMeshSize * 2];
+	tris2 = new MeshTriangle[maxMeshSize * maxMeshSize * 2];
 	if (!tris1)
 	{
 		return false;
@@ -73,14 +73,14 @@ bool Cube::CreateMemory()
 	return true;
 }
 
-bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double meshWidth, VECTOR3D dir1, VECTOR3D dir2)
+bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double meshWidth, double meshHeight, VECTOR3D dir1, VECTOR3D dir2)
 {
 	m_meshSize = meshSize;
 	VECTOR3D o;
 	int currentVertex = 0;
 	double sf1, sf2, sf3;
 
-	VECTOR3D v1, v2;
+	VECTOR3D v1, v2, v3, v4;
 
 	v1.x = dir1.x;
 	v1.y = dir1.y;
@@ -95,14 +95,14 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 	sf2 = meshWidth / meshSize;
 	v2 *= sf2;
 
-	VECTOR3D v3;
-	VECTOR3D dir3 = VECTOR3D(0, 1, 0);
+	VECTOR3D dir3 = VECTOR3D(-v1.y, v1.x, v1.z);
 	v3.x = dir3.x;
 	v3.y = dir3.y;
 	v3.z = dir3.z;
-	sf3 = meshWidth / meshSize;
+	sf3 = meshHeight / meshSize;
 	v3 *= sf3;
 
+	VECTOR3D dir4 = VECTOR3D(-v2.y, v2.x, v2.z);
 	VECTOR3D meshpt;
 
 	numVertices = (meshSize + 1) * (meshSize + 1) * 2;
@@ -141,7 +141,7 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		}
 		o += v3;
 	}
-
+	std::cout << "MeshSize squared " << meshSize * meshSize << std::endl;
 	numTris = (meshSize) * (meshSize) * 2;
 	int currentTri = 0;
 
@@ -158,8 +158,26 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k];
 			currentTri++;
 		}
-		
+
 	}
+	int offset = currentVertex / 2;
+	for (int j = 0; j < meshSize; j++)
+	{
+		for (int k = 0; k < meshSize; k++)
+		{
+			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
+			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset ];
+			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset];
+			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset];
+			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset];
+			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset];
+			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset];
+			currentTri++;
+		}
+
+	}
+
+
 
 
 	this->ComputeNormals();
@@ -176,7 +194,7 @@ void Cube::DrawMesh()
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-	for (int j = 0; j < meshSize; j++)
+	for (int j = 0; j < meshSize * 2; j++)
 	{
 		for (int k = 0; k < meshSize; k++)
 		{
@@ -239,6 +257,7 @@ void Cube::DrawMesh()
 
 
 			glEnd();
+
 			currentTri++;
 		}
 	}
@@ -270,9 +289,9 @@ void Cube::ComputeNormals()
 
 	for (int j = 0; j < m_meshSize; j++)
 	{
-		for (int k = 0; k < m_meshSize; k++)
+		for (int k = 0; k < m_meshSize * 2; k++)
 		{
-			VECTOR3D n0, n1, n2, n3, e0, e1, e2, e3, ne0, ne1, ne2, ne3;
+			VECTOR3D n0, n1, n2, n3, e0, e1, e2, ne0, ne1, ne2;
 
 			tris1[currentTri].vertices[0]->normal.LoadZero();
 			tris1[currentTri].vertices[1]->normal.LoadZero();
@@ -283,9 +302,8 @@ void Cube::ComputeNormals()
 			e0.Normalize();
 			e1.Normalize();
 			e2.Normalize();
-			e3.Normalize();
 
-			n0 = e0.CrossProduct(-e3);
+			n0 = e0.CrossProduct(-e2);
 			n0.Normalize();
 			tris1[currentTri].vertices[0]->normal += n0;
 
@@ -297,8 +315,7 @@ void Cube::ComputeNormals()
 			n2.Normalize();
 			tris1[currentTri].vertices[2]->normal += n2;
 
-			n3 = e3.CrossProduct(-e2);
-			n3.Normalize();
+
 			tris1[currentTri].vertices[0]->normal.Normalize();
 			tris1[currentTri].vertices[1]->normal.Normalize();
 			tris1[currentTri].vertices[2]->normal.Normalize();
@@ -313,9 +330,8 @@ void Cube::ComputeNormals()
 			e0.Normalize();
 			e1.Normalize();
 			e2.Normalize();
-			e3.Normalize();
 
-			n0 = e0.CrossProduct(-e3);
+			n0 = e0.CrossProduct(-e2);
 			n0.Normalize();
 			tris2[currentTri].vertices[0]->normal += n0;
 
@@ -327,8 +343,7 @@ void Cube::ComputeNormals()
 			n2.Normalize();
 			tris2[currentTri].vertices[2]->normal += n2;
 
-			n3 = e3.CrossProduct(-e2);
-			n3.Normalize();
+
 			tris2[currentTri].vertices[0]->normal.Normalize();
 			tris2[currentTri].vertices[1]->normal.Normalize();
 			tris2[currentTri].vertices[2]->normal.Normalize();
