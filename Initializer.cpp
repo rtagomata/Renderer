@@ -104,6 +104,11 @@ namespace Initializer {
 		*/
 		Camera::makeCamera();
 		game::gameObjects.push_back((GameObject*)Camera::camera);
+		
+		//make gui elements
+		GUIElements::GUIElement* picbox = (GUIElements::GUIElement*)new GUIElements::PictureBox("", { Camera::camera->eye->x, Camera::camera->eye->y }, 5.0, 5.0);
+		Camera::camera->GUIElements.push_back(picbox);
+
 		return true;
 	}
 

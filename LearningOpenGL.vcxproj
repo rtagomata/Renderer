@@ -183,12 +183,16 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CallbackFunctions.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GUIElement.h" />
+    <ClInclude Include="GUIElements.h" />
     <ClInclude Include="Initializer.h" />
     <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PictureBox.h" />
     <ClInclude Include="RoomMesh.h" />
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="Misc.h" />
