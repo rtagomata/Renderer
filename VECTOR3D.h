@@ -19,6 +19,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+
+#include <GL/glew.h>
+
+#include <GL/freeglut.h>
 #include <gl/glut.h>
 #include <utility>
 #include <vector>

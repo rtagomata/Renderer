@@ -3,6 +3,7 @@
 Cube::Cube(VECTOR3D Position, VECTOR3D Scale, GLfloat Size, GLfloat Ambient, GLfloat Specular, GLfloat Diffuse, GLfloat Shininess): 
 	GameObject(Position,Scale,Size) 
 {
+
 	
 }
 
@@ -18,6 +19,7 @@ Cube::Cube(int maxMeshSize, float meshDim)
 
 	this->maxMeshSize = maxMeshSize < minMeshSize ? minMeshSize : maxMeshSize;
 	this->meshDim = meshDim;
+
 	CreateMemory();
 	mat_ambient[0] = 0.0;
 	mat_ambient[1] = 0.0;
@@ -75,6 +77,22 @@ bool Cube::CreateMemory()
 
 bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double meshWidth, double meshHeight, VECTOR3D dir1, VECTOR3D dir2)
 {
+	
+	numVertices = (meshSize + 1) * (meshSize + 1) * 6;
+	glGenVertexArrays(1, &VAO1);
+
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cout << "VAO CREATION ERROR" << std::endl;
+	}
+
+	glGenBuffers(1, &VBO1);
+
+	glBindVertexArray(VAO1);
+	glGenBuffers(1, &VBO1);
+
+
+
 	m_meshSize = meshSize;
 	VECTOR3D o;
 	VECTOR3D o2;
@@ -109,7 +127,7 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 	VECTOR3D meshpt;
 
-	numVertices = (meshSize + 1) * (meshSize + 1) * 2;
+	numVertices = (meshSize + 1) * (meshSize + 1) * 6;
 
 	o.Set(origin.x, origin.y, origin.z);
 
@@ -146,7 +164,6 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		}
 		o += v3;
 	}
-
 
 
 	o.Set(origin.x, origin.y, origin.z);
@@ -227,110 +244,44 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 
 
-	std::cout << "MeshSize squared " << meshSize * meshSize << std::endl;
-	numTris = (meshSize) * (meshSize) * 4;
+	numTris = (meshSize) * (meshSize) * 6;
 	int currentTri = 0;
 
-	for (int j = 0; j < meshSize; j++)
+	int offset = (meshSize + 1) * (meshSize + 1);
+	for (int i = 0; i < 6; i++)
 	{
-		for (int k = 0; k < meshSize; k++)
+		for (int j = 0; j < meshSize; j++)
 		{
-			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
-			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k];
-			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1];
-			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k];
-			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1];
-			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1];
-			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k];
-			currentTri++;
+			for (int k = 0; k < meshSize; k++)
+			{
+				tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * i];
+				tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * i];
+				tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * i];
+				tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * i];
+				tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * i];
+				tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * i];
+				currentTri++;
+			}
 		}
-
 	}
-	int offset = (meshSize + 1)* (meshSize + 1);
-	for (int j = 0; j < meshSize; j++)
-	{
-		for (int k = 0; k < meshSize; k++)
-		{
-			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
-			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset];
-			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset];
-			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset];
-			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset];
-			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset];
-			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset];
-			currentTri++;
-		}
-
-	}
-	for (int j = 0; j < meshSize; j++)
-	{
-		for (int k = 0; k < meshSize; k++)
-		{
-			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
-			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 2];
-			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 2];
-			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 2];
-			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 2];
-			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 2];
-			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 2];
-			currentTri++;
-		}
-
-	}
-
-	for (int j = 0; j < meshSize; j++)
-	{
-		for (int k = 0; k < meshSize; k++)
-		{
-			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
-			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 3];
-			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 3];
-			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 3];
-			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 3];
-			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 3];
-			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 3];
-			currentTri++;
-		}
-
-	}
-
-
-	for (int j = 0; j < meshSize; j++)
-	{
-		for (int k = 0; k < meshSize; k++)
-		{
-			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
-			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 4];
-			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 4];
-			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 4];
-			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 4];
-			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 4];
-			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 4];
-			currentTri++;
-		}
-
-	}
-
-	for (int j = 0; j < meshSize; j++)
-	{
-		for (int k = 0; k < meshSize; k++)
-		{
-			std::cout << j * (meshSize + 1) + k + 1 << std::endl;
-			tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * 5];
-			tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * 5];
-			tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 5];
-			tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * 5];
-			tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * 5];
-			tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * 5];
-			currentTri++;
-		}
-
-	}
-
-
+	
 
 
 	this->ComputeNormals();
+	glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(MeshVertex) * maxMeshSize * maxMeshSize * 6, &tris1[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)offsetof(MeshVertex, position));
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)offsetof(MeshVertex, normal));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+
 
 	return true;
 }
@@ -343,7 +294,7 @@ void Cube::DrawMesh()
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-
+	/*
 	for (int j = 0; j < meshSize * 6; j++)
 	{
 		for (int k = 0; k < meshSize; k++)
@@ -411,6 +362,11 @@ void Cube::DrawMesh()
 			currentTri++;
 		}
 	}
+	*/
+
+	glBindVertexArray(VAO1);
+	glDrawArrays(GL_TRIANGLES, 0, meshSize * meshSize * 6);
+	glBindVertexArray(0);
 }
 
 void Cube::UpdateMesh()
