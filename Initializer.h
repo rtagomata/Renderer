@@ -12,10 +12,6 @@ namespace Initializer {
 	// Set up and enable lighting
 	bool initOpenGL();
 	
-	//Setup shaders
-	bool initShaders();
-	std::string loadShaderSrc(const std::string& filename);
-
 	// Set up callback functions for glut
 	bool setCallbackFunctions();
 

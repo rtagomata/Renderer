@@ -17,19 +17,13 @@ public:
 	int minMeshSize;
 	float meshDim;
 
-	GLuint VAO1;
-	GLuint VBO1;
-	GLuint VAO2;
-	GLuint VBO2;
-
-
 	int numVertices;
 	MeshVertex* vertices;
 
 	int numTris;
 	MeshTriangle* tris1;
 	MeshTriangle* tris2;
-		
+
 
 
 	int numFacesDrawn;

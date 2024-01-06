@@ -1,75 +1,16 @@
 #include "Initializer.h"
 #include <cstdlib>
-#include <fstream>
+
 namespace Initializer {
 	bool initGlut(int argc, char** argv, const int& vWidth, const int& vHeight) {
-		glewExperimental = GL_TRUE;
-		
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 		glutInitWindowSize(vWidth, vHeight);
 		glutInitWindowPosition(200, 30);
 		glutCreateWindow("3D Room");
-
-		GLenum err = glewInit();
-
-		if (GLEW_OK != err)
-		{
-			fprintf(stderr, "Glew error: %s\n", glewGetErrorString(err));
-		}
-		
 		return true;
 	}
 
-	std::string loadShaderSrc(const std::string& filename) {
-		std::ifstream is(filename);
-		if (is.is_open()) {
-			std::stringstream buffer;
-			buffer << is.rdbuf();
-			return buffer.str();
-		}
-		std::cerr << "Unable to open file " << filename << std::endl;
-		exit(1);
-	}
-
-
-	bool initShaders()
-	{
-
-		glEnable(GL_DEPTH_TEST);
-		GLint vertexLoc;
-		GLint colorLoc;
-		GLuint vertID = 0;
-		GLuint fragID = 0;
-		vertID = glCreateShader(GL_VERTEX_SHADER);
-		fragID = glCreateShader(GL_FRAGMENT_SHADER);
-
-		std::string vs = loadShaderSrc("./first.vert");
-		const char* vss = vs.c_str();
-		std::string fs = loadShaderSrc("./first.frag");
-		const char* fss = fs.c_str();
-
-
-		glShaderSource(vertID, 1, &(vss), NULL);
-		glShaderSource(fragID, 1, &(fss), NULL);
-
-		glCompileShader(vertID);
-		glCompileShader(fragID);
-
-
-
-		GLuint progID = glCreateProgram();
-		glAttachShader(progID, vertID);
-		glAttachShader(progID, fragID);
-
-		glBindFragDataLocation(progID, 0, "outputColor");
-		glLinkProgram(progID);
-
-		vertexLoc = glGetAttribLocation(progID, "inputPosition");
-		colorLoc = glGetAttribLocation(progID, "inputColor");
-
-		return true;
-	}
 	bool initOpenGL() {
 		glLightfv(GL_LIGHT0, GL_AMBIENT, staticPropertyValues::light_ambient);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, staticPropertyValues::light_diffuse);
@@ -180,7 +121,6 @@ namespace Initializer {
 			std::cout << "FAILED!\n";
 			return false;
 		}
-
 		std::cout << "Initializing OpenGL...";
 		if (Initializer::initOpenGL()) {
 			std::cout << "OK!\n";
@@ -196,11 +136,6 @@ namespace Initializer {
 		else {
 			std::cout << "FAILED!\n";
 			return false;
-		}
-		std::cout << "Initializing shaders";
-		if (Initializer::initShaders())
-		{
-			std::cout << "OK!\n";
 		}
 		std::cout << "Initializing game objects...";
 		if (Initializer::initializeGameObjects()) {
