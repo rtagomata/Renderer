@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <sstream>
 #include "Camera.h"
+#include "RoomMesh.h"
 
 namespace callbackFunctions {
 	extern int frameCount;
