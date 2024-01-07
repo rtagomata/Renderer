@@ -363,7 +363,7 @@ void Cube::DrawMesh()
 		}
 	}
 	*/
-	glUseProgram(progID);
+	glUseProgram(game::progID);
 	glBindVertexArray(VAO1);
 	glDrawArrays(GL_TRIANGLES, 0, meshSize * meshSize * 6);
 	glBindVertexArray(0);

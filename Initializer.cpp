@@ -69,17 +69,17 @@ namespace Initializer {
 
 
 
-		GLuint progID = glCreateProgram();
-		glAttachShader(progID, vertID);
-		glAttachShader(progID, fragID);
+		game::progID = glCreateProgram();
+		glAttachShader(game::progID, vertID);
+		glAttachShader(game::progID, fragID);
 
-		glBindFragDataLocation(progID, 0, "outputColor");
-		glLinkProgram(progID);
+		glBindFragDataLocation(game::progID, 0, "outputColor");
+		glLinkProgram(game::progID);
 
-		printProgramInfoLog(progID);
+		printProgramInfoLog(game::progID);
 
-		vertexLoc = glGetAttribLocation(progID, "inputPosition");
-		colorLoc = glGetAttribLocation(progID, "inputColor");
+		vertexLoc = glGetAttribLocation(game::progID, "inputPosition");
+		colorLoc = glGetAttribLocation(game::progID, "inputColor");
 
 		return true;
 	}

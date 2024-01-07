@@ -29,6 +29,7 @@ namespace game {
 	extern int previousTime;
 	extern std::thread bkgdThread;
 	extern bool running;
+	static GLuint progID;
 }
 
 
