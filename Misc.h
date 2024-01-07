@@ -1,10 +1,12 @@
 #pragma once
 #include <thread>
-#include <chrono>
-#include <ctime>
+//#include <chrono>
+//#include <ctime>
 
-#include "RoomMesh.h"
-#include "Cube.h"
+//#include "RoomMesh.h"
+//#include "Cube.h"
+
+#include "VECTOR3D.h"
 
 namespace staticPropertyValues {
 	static GLfloat room_mat_ambient[] = { 0.0f,0.0f,0.0f,1.0f };
@@ -20,9 +22,14 @@ namespace staticPropertyValues {
 	static GLfloat light_ambient[] = { 0.2F, 0.2F, 0.2F, 1.0F };
 }
 
+class GameObject; //forward declare
+
 namespace game {
 	extern std::vector<GameObject*> gameObjects;
 	extern int previousTime;
 	extern std::thread bkgdThread;
 	extern bool running;
 }
+
+
+//you can put ur global var here smwhere

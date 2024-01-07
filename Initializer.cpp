@@ -1,6 +1,5 @@
 #include "Initializer.h"
-#include <cstdlib>
-#include <fstream>
+
 namespace Initializer {
 	bool initGlut(int argc, char** argv, const int& vWidth, const int& vHeight) {
 		glewExperimental = GL_TRUE;

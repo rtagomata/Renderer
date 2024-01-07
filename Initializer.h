@@ -1,8 +1,10 @@
 #pragma once
 #include <iostream>
+#include <cstdlib>
+#include <fstream>
 
+#include "Cube.h"
 #include "callbackFunctions.h"
-
 
 namespace Initializer {
 	// Initialize GLUT
