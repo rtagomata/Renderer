@@ -269,7 +269,7 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 	this->ComputeNormals();
 	glBindBuffer(GL_ARRAY_BUFFER, VBO1);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(MeshVertex) * maxMeshSize * maxMeshSize * 6, &tris1[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(MeshVertex) * meshSize * meshSize * 6, &tris1[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)offsetof(MeshVertex, position));
 	glEnableVertexAttribArray(0);
@@ -363,7 +363,7 @@ void Cube::DrawMesh()
 		}
 	}
 	*/
-
+	glUseProgram(progID);
 	glBindVertexArray(VAO1);
 	glDrawArrays(GL_TRIANGLES, 0, meshSize * meshSize * 6);
 	glBindVertexArray(0);

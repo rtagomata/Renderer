@@ -32,6 +32,18 @@ namespace Initializer {
 		exit(1);
 	}
 
+	void printProgramInfoLog(GLuint obj) {
+		int infoLogLength = 0;
+		int returnLength = 0;
+		char* infoLog;
+		glGetProgramiv(obj, GL_INFO_LOG_LENGTH, &infoLogLength);
+		if (infoLogLength > 0) {
+			infoLog = (char*)malloc(infoLogLength);
+			glGetProgramInfoLog(obj, infoLogLength, &returnLength, infoLog);
+			printf("%s\n", infoLog);
+			free(infoLog);
+		}
+	}
 
 	bool initShaders()
 	{
@@ -64,6 +76,8 @@ namespace Initializer {
 
 		glBindFragDataLocation(progID, 0, "outputColor");
 		glLinkProgram(progID);
+
+		printProgramInfoLog(progID);
 
 		vertexLoc = glGetAttribLocation(progID, "inputPosition");
 		colorLoc = glGetAttribLocation(progID, "inputColor");

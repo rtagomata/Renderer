@@ -15,7 +15,7 @@ namespace Initializer {
 	//Setup shaders
 	bool initShaders();
 	std::string loadShaderSrc(const std::string& filename);
-
+	void printProgramInfoLog(GLuint obj);
 	// Set up callback functions for glut
 	bool setCallbackFunctions();
 
