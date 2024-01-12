@@ -30,7 +30,7 @@ public:
 	MeshTriangle* tris1;
 	MeshTriangle* tris2;
 		
-
+	VECTOR3D* triangles;
 
 	int numFacesDrawn;
 

@@ -48,8 +48,6 @@ namespace Initializer {
 	{
 
 		glEnable(GL_DEPTH_TEST);
-		GLint vertexLoc;
-		GLint colorLoc;
 		GLuint vertID = 0;
 		GLuint fragID = 0;
 		vertID = glCreateShader(GL_VERTEX_SHADER);
@@ -73,13 +71,13 @@ namespace Initializer {
 		glAttachShader(game::progID, vertID);
 		glAttachShader(game::progID, fragID);
 
-		glBindFragDataLocation(game::progID, 0, "outputColor");
+		glBindFragDataLocation(game::progID, 0, "outputPosition");
 		glLinkProgram(game::progID);
 
 		printProgramInfoLog(game::progID);
 
-		vertexLoc = glGetAttribLocation(game::progID, "inputPosition");
-		colorLoc = glGetAttribLocation(game::progID, "inputColor");
+		game::vertexLoc = glGetAttribLocation(game::progID, "inputPosition");
+		game::normalLoc = glGetAttribLocation(game::progID, "inputNormal");
 
 		return true;
 	}

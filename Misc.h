@@ -30,6 +30,9 @@ namespace game {
 	extern std::thread bkgdThread;
 	extern bool running;
 	static GLuint progID;
+	static GLuint vertexLoc;
+	static GLuint colorLoc;
+	static GLuint normalLoc;
 }
 
 
