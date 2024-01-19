@@ -14,7 +14,6 @@ Cube::Cube(int maxMeshSize, float meshDim)
 	vertices = NULL;
 	numTris = 0;
 	tris1 = NULL;
-	tris2 = NULL;
 	numFacesDrawn = 0;
 
 	this->maxMeshSize = maxMeshSize < minMeshSize ? minMeshSize : maxMeshSize;
@@ -62,16 +61,12 @@ bool Cube::CreateMemory()
 		return false;
 	}
 
-	tris1 = new MeshTriangle[maxMeshSize * maxMeshSize * 6];
-	tris2 = new MeshTriangle[maxMeshSize * maxMeshSize * 6];
+	tris1 = new MeshTriangle[maxMeshSize * maxMeshSize * 6 * 2];
 	if (!tris1)
 	{
 		return false;
 	}
-	if (!tris2)
-	{
-		return false;
-	}
+
 	return true;
 }
 
@@ -236,10 +231,12 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 
 
+
 	numTris = (meshSize) * (meshSize) * 6;
 	int currentTri = 0;
 
 	int offset = (meshSize + 1) * (meshSize + 1);
+	int toffset = meshSize * meshSize * 6;
 	for (int i = 0; i < 6; i++)
 	{
 		for (int j = 0; j < meshSize; j++)
@@ -249,9 +246,9 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 				tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * i];
 				tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * i];
 				tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * i];
-				tris2[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * i];
-				tris2[currentTri].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * i];
-				tris2[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * i];
+				tris1[currentTri + toffset].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * i];
+				tris1[currentTri + toffset].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * i];
+				tris1[currentTri + toffset].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * i];
 				currentTri++;
 			}
 		}
@@ -269,15 +266,15 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		triangles[i * 3] = tris1[i].vertices[0]->position;
 		triangles[i * 3 + 1] = tris1[i].vertices[1]->position;
 		triangles[i * 3 + 2] = tris1[i].vertices[2]->position;
-		triangles[i * 3 + offset] = tris2[i].vertices[0]->position;
-		triangles[i * 3 + 1 + offset] = tris2[i].vertices[1]->position;
-		triangles[i * 3 + 2 + offset] = tris2[i].vertices[2]->position;
+		triangles[i * 3 + offset] = tris1[i + toffset].vertices[0]->position;
+		triangles[i * 3 + 1 + offset] = tris1[i + toffset].vertices[1]->position;
+		triangles[i * 3 + 2 + offset] = tris1[i + toffset].vertices[2]->position;
 		normals[i * 3] = tris1[i].vertices[0]->normal;
 		normals[i * 3 + 1] = tris1[i].vertices[0]->normal;
 		normals[i * 3 + 2] = tris1[i].vertices[0]->normal;
-		normals[i * 3 + offset] = tris2[i].vertices[0]->normal;
-		normals[i * 3 + 1 + offset] = tris2[i].vertices[0]->normal;
-		normals[i * 3 + 2 + offset] = tris2[i].vertices[0]->normal;
+		normals[i * 3 + offset] = tris1[i + toffset].vertices[0]->normal;
+		normals[i * 3 + 1 + offset] = tris1[i + toffset].vertices[0]->normal;
+		normals[i * 3 + 2 + offset] = tris1[i + toffset].vertices[0]->normal;
 
 	}
 	 
@@ -360,28 +357,28 @@ void Cube::DrawMesh()
 
 
 
-			glNormal3f(tris2[currentTri].vertices[0]->normal.x,
-				tris2[currentTri].vertices[0]->normal.y,
-				tris2[currentTri].vertices[0]->normal.z);
-			glVertex3f(tris2[currentTri].vertices[0]->position.x,
-				tris2[currentTri].vertices[0]->position.y,
-				tris2[currentTri].vertices[0]->position.z);
+			glNormal3f(tris1[currentTri + toffset].vertices[0]->normal.x,
+				tris1[currentTri + toffset].vertices[0]->normal.y,
+				tris1[currentTri + toffset].vertices[0]->normal.z);
+			glVertex3f(tris1[currentTri + toffset].vertices[0]->position.x,
+				tris1[currentTri + toffset].vertices[0]->position.y,
+				tris1[currentTri + toffset].vertices[0]->position.z);
 
-			glNormal3f(tris2[currentTri].vertices[1]->normal.x,
-				tris2[currentTri].vertices[1]->normal.y,
-				tris2[currentTri].vertices[1]->normal.z);
+			glNormal3f(tris1[currentTri + toffset].vertices[1]->normal.x,
+				tris1[currentTri + toffset].vertices[1]->normal.y,
+				tris1[currentTri + toffset].vertices[1]->normal.z);
 
-			glVertex3f(tris2[currentTri].vertices[1]->position.x,
-				tris2[currentTri].vertices[1]->position.y,
-				tris2[currentTri].vertices[1]->position.z);
+			glVertex3f(tris1[currentTri + toffset].vertices[1]->position.x,
+				tris1[currentTri + toffset].vertices[1]->position.y,
+				tris1[currentTri + toffset].vertices[1]->position.z);
 
-			glNormal3f(tris2[currentTri].vertices[2]->normal.x,
-				tris2[currentTri].vertices[2]->normal.y,
-				tris2[currentTri].vertices[2]->normal.z);
+			glNormal3f(tris1[currentTri + toffset].vertices[2]->normal.x,
+				tris1[currentTri + toffset].vertices[2]->normal.y,
+				tris1[currentTri + toffset].vertices[2]->normal.z);
 
-			glVertex3f(tris2[currentTri].vertices[2]->position.x,
-				tris2[currentTri].vertices[2]->position.y,
-				tris2[currentTri].vertices[2]->position.z);
+			glVertex3f(tris1[currentTri + toffset].vertices[2]->position.x,
+				tris1[currentTri + toffset].vertices[2]->position.y,
+				tris1[currentTri + toffset].vertices[2]->position.z);
 
 
 			glEnd();
@@ -410,9 +407,7 @@ void Cube::FreeMemory()
 	if (tris1)
 		delete[] tris1;
 	tris1 = NULL;
-	if (tris2)
-		delete[] tris2;
-	tris2 = NULL;
+
 
 	numTris= 0;
 }
@@ -421,6 +416,7 @@ void Cube::ComputeNormals()
 {
 	int currentTri = 0;
 
+	int toffset = m_meshSize * m_meshSize * 6;
 	for (int j = 0; j < m_meshSize; j++)
 	{
 		for (int k = 0; k < m_meshSize * 6; k++)
@@ -455,32 +451,32 @@ void Cube::ComputeNormals()
 			tris1[currentTri].vertices[2]->normal.Normalize();
 
 
-			tris2[currentTri].vertices[0]->normal.LoadZero();
-			tris2[currentTri].vertices[1]->normal.LoadZero();
-			tris2[currentTri].vertices[2]->normal.LoadZero();
-			e0 = tris2[currentTri].vertices[1]->position - tris2[currentTri].vertices[2]->position;
-			e1 = tris2[currentTri].vertices[2]->position - tris2[currentTri].vertices[0]->position;
-			e2 = tris2[currentTri].vertices[0]->position - tris2[currentTri].vertices[1]->position;
+			tris1[currentTri + toffset].vertices[0]->normal.LoadZero();
+			tris1[currentTri + toffset].vertices[1]->normal.LoadZero();
+			tris1[currentTri + toffset].vertices[2]->normal.LoadZero();
+			e0 = tris1[currentTri + toffset].vertices[1]->position - tris1[currentTri + toffset].vertices[2]->position;
+			e1 = tris1[currentTri + toffset].vertices[2]->position - tris1[currentTri + toffset].vertices[0]->position;
+			e2 = tris1[currentTri + toffset].vertices[0]->position - tris1[currentTri + toffset].vertices[1]->position;
 			e0.Normalize();
 			e1.Normalize();
 			e2.Normalize();
 
 			n0 = e0.CrossProduct(-e2);
 			n0.Normalize();
-			tris2[currentTri].vertices[0]->normal += n0;
+			tris1[currentTri + toffset].vertices[0]->normal += n0;
 
 			n1 = e1.CrossProduct(-e0);
 			n1.Normalize();
-			tris2[currentTri].vertices[1]->normal += n1;
+			tris1[currentTri + toffset].vertices[1]->normal += n1;
 
 			n2 = e2.CrossProduct(-e1);
 			n2.Normalize();
-			tris2[currentTri].vertices[2]->normal += n2;
+			tris1[currentTri + toffset].vertices[2]->normal += n2;
 
 
-			tris2[currentTri].vertices[0]->normal.Normalize();
-			tris2[currentTri].vertices[1]->normal.Normalize();
-			tris2[currentTri].vertices[2]->normal.Normalize();
+			tris1[currentTri + toffset].vertices[0]->normal.Normalize();
+			tris1[currentTri + toffset].vertices[1]->normal.Normalize();
+			tris1[currentTri + toffset].vertices[2]->normal.Normalize();
 
 			currentTri++;
 		}

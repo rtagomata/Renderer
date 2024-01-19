@@ -6,5 +6,4 @@ out vec3 outputPosition;
 void main() {
     outputPosition = vec3(inPosition.x + 111.0, inPosition.y, inPosition.z);
 
-    gl_Position = outputPosition;
 }
