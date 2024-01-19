@@ -79,16 +79,7 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 {
 	
 	numVertices = (meshSize + 1) * (meshSize + 1) * 6;
-	glGenVertexArrays(1, &VAO1);
 
-	GLenum error = glGetError();
-	if (error != GL_NO_ERROR) {
-		std::cout << "VAO CREATION ERROR" << std::endl;
-	}
-
-	glBindVertexArray(VAO1);
-	glGenBuffers(1, &VBO1);
-	glGenBuffers(1, &VBO2);
 
 
 
@@ -270,6 +261,7 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 	this->ComputeNormals();
 
+	normals = new VECTOR3D[meshSize * meshSize * 6 * 3 * 2];
 	triangles = new VECTOR3D[meshSize * meshSize * 6 * 3 * 2];
 	offset = meshSize * meshSize * 6 * 3;
 	for (int i = 0; i < meshSize * meshSize * 6; i++)
@@ -280,22 +272,40 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		triangles[i * 3 + offset] = tris2[i].vertices[0]->position;
 		triangles[i * 3 + 1 + offset] = tris2[i].vertices[1]->position;
 		triangles[i * 3 + 2 + offset] = tris2[i].vertices[2]->position;
+		normals[i * 3] = tris1[i].vertices[0]->normal;
+		normals[i * 3 + 1] = tris1[i].vertices[0]->normal;
+		normals[i * 3 + 2] = tris1[i].vertices[0]->normal;
+		normals[i * 3 + offset] = tris2[i].vertices[0]->normal;
+		normals[i * 3 + 1 + offset] = tris2[i].vertices[0]->normal;
+		normals[i * 3 + 2 + offset] = tris2[i].vertices[0]->normal;
 
 	}
 	 
 
+	glGenVertexArrays(1, &VAO1);
 
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cout << "VAO CREATION ERROR" << std::endl;
+	}
+
+	glBindVertexArray(VAO1);
+
+
+	glGenBuffers(1, &VBO1);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VECTOR3D) * meshSize * meshSize * 6 * 3 * 2, triangles, GL_STATIC_DRAW);
-
+	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VECTOR3D), nullptr);
-	glEnableVertexAttribArray(game::vertexLoc);
 
+
+	glGenBuffers(1, &VBO2);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VECTOR3D)* meshSize* meshSize * 6 * 3 * 2, normals, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VECTOR3D), nullptr);
-	glEnableVertexAttribArray(game::normalLoc);
 
 	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
 

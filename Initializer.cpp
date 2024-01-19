@@ -77,6 +77,7 @@ namespace Initializer {
 		printProgramInfoLog(game::progID);
 
 		game::vertexLoc = glGetAttribLocation(game::progID, "inputPosition");
+
 		game::normalLoc = glGetAttribLocation(game::progID, "inputNormal");
 
 		return true;

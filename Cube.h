@@ -31,7 +31,7 @@ public:
 	MeshTriangle* tris2;
 		
 	VECTOR3D* triangles;
-
+	VECTOR3D* normals;
 	int numFacesDrawn;
 
 	bool CreateMemory();
