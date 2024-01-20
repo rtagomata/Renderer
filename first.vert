@@ -1,13 +1,11 @@
-#version 140
- 
-layout(location = 0) in vec3 inputPosition;
-layout(location = 1) in vec3 inputNormal;
- 
-out vec3 outNormal;
- 
-void main(){
+#version 330 core
 
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec3 inNormal;
 
-    gl_Position = vec4(inputPosition, 1.0);
-    outNormal = inputNormal;
+out vec3 fragNormal;
+
+void main() {
+    gl_Position = vec4(inPosition, 1.0);
+    fragNormal = normalize(inNormal);
 }

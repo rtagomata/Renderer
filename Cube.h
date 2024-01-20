@@ -29,7 +29,7 @@ public:
 	int numTris;
 	MeshTriangle* tris1;
 		
-	VECTOR3D* triangles;
+	VECTOR3D* positions;
 	VECTOR3D* normals;
 	int numFacesDrawn;
 

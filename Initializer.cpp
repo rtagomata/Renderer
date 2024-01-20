@@ -65,7 +65,25 @@ namespace Initializer {
 		glCompileShader(vertID);
 		glCompileShader(fragID);
 
-
+		int success;
+		glGetShaderiv(vertID, GL_COMPILE_STATUS, &success);
+		if (success == GL_FALSE) {
+			int length;
+			glGetShaderiv(vertID, GL_INFO_LOG_LENGTH, &length);
+			char* msg = new char[length];
+			glGetShaderInfoLog(vertID, length, &length, msg);
+			std::cout << "\n" << msg << "\n";
+			return 0;
+		}
+		glGetShaderiv(fragID, GL_COMPILE_STATUS, &success);
+		if (success == GL_FALSE) {
+			int length;
+			glGetShaderiv(fragID, GL_INFO_LOG_LENGTH, &length);
+			char* msg = new char[length];
+			glGetShaderInfoLog(fragID, length, &length, msg);
+			std::cout << "\n" << msg << "\n";
+			return 0;
+		}
 
 		game::progID = glCreateProgram();
 		glAttachShader(game::progID, vertID);
@@ -209,7 +227,7 @@ namespace Initializer {
 			std::cout << "FAILED!\n";
 			return false;
 		}
-		std::cout << "Initializing shaders";
+		std::cout << "Initializing shaders...";
 		if (Initializer::initShaders())
 		{
 			std::cout << "OK!\n";

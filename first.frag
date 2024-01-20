@@ -1,9 +1,10 @@
-#version 140
- 
-in vec3 inPosition;
-out vec3 outputPosition;
- 
-void main() {
-    outputPosition = vec3(inPosition.x + 111.0, inPosition.y, inPosition.z);
+#version 330 core
 
+in vec3 fragNormal;
+
+out vec4 fragColor;
+
+void main() {
+    // Use the normal for simple color representation (for illustration)
+    fragColor = vec4(normalize(fragNormal) * 0.5 + 0.5, 1.0);
 }

@@ -75,10 +75,6 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 	
 	numVertices = (meshSize + 1) * (meshSize + 1) * 6;
 
-
-
-
-
 	m_meshSize = meshSize;
 	VECTOR3D o;
 	VECTOR3D o2;
@@ -227,11 +223,6 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 	}
 
 
-
-
-
-
-
 	numTris = (meshSize) * (meshSize) * 6;
 	int currentTri = 0;
 
@@ -253,22 +244,20 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 			}
 		}
 	}
-	
-	
 
 	this->ComputeNormals();
 
 	normals = new VECTOR3D[meshSize * meshSize * 6 * 3 * 2];
-	triangles = new VECTOR3D[meshSize * meshSize * 6 * 3 * 2];
+	positions = new VECTOR3D[meshSize * meshSize * 6 * 3 * 2];
 	offset = meshSize * meshSize * 6 * 3;
 	for (int i = 0; i < meshSize * meshSize * 6; i++)
 	{
-		triangles[i * 3] = tris1[i].vertices[0]->position;
-		triangles[i * 3 + 1] = tris1[i].vertices[1]->position;
-		triangles[i * 3 + 2] = tris1[i].vertices[2]->position;
-		triangles[i * 3 + offset] = tris1[i + toffset].vertices[0]->position;
-		triangles[i * 3 + 1 + offset] = tris1[i + toffset].vertices[1]->position;
-		triangles[i * 3 + 2 + offset] = tris1[i + toffset].vertices[2]->position;
+		positions[i * 3] = tris1[i].vertices[0]->position;
+		positions[i * 3 + 1] = tris1[i].vertices[1]->position;
+		positions[i * 3 + 2] = tris1[i].vertices[2]->position;
+		positions[i * 3 + offset] = tris1[i + toffset].vertices[0]->position;
+		positions[i * 3 + 1 + offset] = tris1[i + toffset].vertices[1]->position;
+		positions[i * 3 + 2 + offset] = tris1[i + toffset].vertices[2]->position;
 		normals[i * 3] = tris1[i].vertices[0]->normal;
 		normals[i * 3 + 1] = tris1[i].vertices[0]->normal;
 		normals[i * 3 + 2] = tris1[i].vertices[0]->normal;
@@ -291,17 +280,19 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 
 	glGenBuffers(1, &VBO1);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO1);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VECTOR3D) * meshSize * meshSize * 6 * 3 * 2, triangles, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(MeshVertex) * numVertices, vertices, GL_STATIC_DRAW);
+	
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)offsetof(MeshVertex, position));
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VECTOR3D), nullptr);
-
-
-	glGenBuffers(1, &VBO2);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VECTOR3D)* meshSize* meshSize * 6 * 3 * 2, normals, GL_STATIC_DRAW);
+	
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glGenBuffers(1, &VBO2);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(VECTOR3D)* meshSize* meshSize * 6 * 3 * 2, normals, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), (void*)offsetof(MeshVertex, normal));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VECTOR3D), nullptr);
-
+	
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 
