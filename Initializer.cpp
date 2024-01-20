@@ -180,7 +180,7 @@ namespace Initializer {
 
 		float shininess = 0.2;
 		Cube* sample = new Cube(4.0, 8.0);
-		sample->InitMesh(4, origin, 8.0, 8.0, 8.0);
+		sample->InitMesh(1, origin, 1.0, 1.0, 1.0);
 		sample->SetMaterial(ambient, diffuse, specular, shininess);
 		game::gameObjects.push_back((GameObject*)sample);
 
