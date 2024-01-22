@@ -211,7 +211,7 @@ void RoomMesh::FreeMemory()
 	if (quads)
 		delete[] quads;
 	quads = NULL;
-	numQuads = 0;
+	numVertices = 0;
 }
 
 void RoomMesh::ComputeNormals()

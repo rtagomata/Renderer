@@ -243,12 +243,12 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 		{
 			for (int k = 0; k < meshSize; k++)
 			{
-				tris1[currentTri].vertices[0] = &vertices[j * (meshSize + 1) + k + offset * i];
-				tris1[currentTri].vertices[1] = &vertices[j * (meshSize + 1) + k + 1 + offset * i];
-				tris1[currentTri].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * i];
-				tris1[currentTri + toffset].vertices[0] = &vertices[j * (meshSize + 1) + k + 1 + offset * i];
-				tris1[currentTri + toffset].vertices[1] = &vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * i];
-				tris1[currentTri + toffset].vertices[2] = &vertices[(j + 1) * (meshSize + 1) + k + offset * i];
+				tris1[currentTri].vertices[0] = vertices[j * (meshSize + 1) + k + offset * i];
+				tris1[currentTri].vertices[1] = vertices[j * (meshSize + 1) + k + 1 + offset * i];
+				tris1[currentTri].vertices[2] = vertices[(j + 1) * (meshSize + 1) + k + offset * i];
+				tris1[currentTri + toffset].vertices[0] = vertices[j * (meshSize + 1) + k + 1 + offset * i];
+				tris1[currentTri + toffset].vertices[1] = vertices[(j + 1) * (meshSize + 1) + k + 1 + offset * i];
+				tris1[currentTri + toffset].vertices[2] = vertices[(j + 1) * (meshSize + 1) + k + offset * i];
 				currentTri++;
 			}
 		}
@@ -263,18 +263,18 @@ bool Cube::InitMesh(int meshSize, VECTOR3D origin, double meshLength, double mes
 	offset = meshSize * meshSize * 6 * 3;
 	for (int i = 0; i < meshSize * meshSize * 6; i++)
 	{
-		triangles[i * 3] = tris1[i].vertices[0]->position;
-		triangles[i * 3 + 1] = tris1[i].vertices[1]->position;
-		triangles[i * 3 + 2] = tris1[i].vertices[2]->position;
-		triangles[i * 3 + offset] = tris1[i + toffset].vertices[0]->position;
-		triangles[i * 3 + 1 + offset] = tris1[i + toffset].vertices[1]->position;
-		triangles[i * 3 + 2 + offset] = tris1[i + toffset].vertices[2]->position;
-		normals[i * 3] = tris1[i].vertices[0]->normal;
-		normals[i * 3 + 1] = tris1[i].vertices[0]->normal;
-		normals[i * 3 + 2] = tris1[i].vertices[0]->normal;
-		normals[i * 3 + offset] = tris1[i + toffset].vertices[0]->normal;
-		normals[i * 3 + 1 + offset] = tris1[i + toffset].vertices[0]->normal;
-		normals[i * 3 + 2 + offset] = tris1[i + toffset].vertices[0]->normal;
+		triangles[i * 3] = tris1[i].vertices[0].position;
+		triangles[i * 3 + 1] = tris1[i].vertices[1].position;
+		triangles[i * 3 + 2] = tris1[i].vertices[2].position;
+		triangles[i * 3 + offset] = tris1[i + toffset].vertices[0].position;
+		triangles[i * 3 + 1 + offset] = tris1[i + toffset].vertices[1].position;
+		triangles[i * 3 + 2 + offset] = tris1[i + toffset].vertices[2].position;
+		normals[i * 3] = tris1[i].vertices[0].normal;
+		normals[i * 3 + 1] = tris1[i].vertices[0].normal;
+		normals[i * 3 + 2] = tris1[i].vertices[0].normal;
+		normals[i * 3 + offset] = tris1[i + toffset].vertices[0].normal;
+		normals[i * 3 + 1 + offset] = tris1[i + toffset].vertices[0].normal;
+		normals[i * 3 + 2 + offset] = tris1[i + toffset].vertices[0].normal;
 
 	}
 	 
@@ -423,60 +423,60 @@ void Cube::ComputeNormals()
 		{
 			VECTOR3D n0, n1, n2, n3, e0, e1, e2, ne0, ne1, ne2;
 
-			tris1[currentTri].vertices[0]->normal.LoadZero();
-			tris1[currentTri].vertices[1]->normal.LoadZero();
-			tris1[currentTri].vertices[2]->normal.LoadZero();
-			e0 = tris1[currentTri].vertices[1]->position - tris1[currentTri].vertices[2]->position;
-			e1 = tris1[currentTri].vertices[2]->position - tris1[currentTri].vertices[0]->position;
-			e2 = tris1[currentTri].vertices[0]->position - tris1[currentTri].vertices[1]->position;
+			tris1[currentTri].vertices[0].normal.LoadZero();
+			tris1[currentTri].vertices[1].normal.LoadZero();
+			tris1[currentTri].vertices[2].normal.LoadZero();
+			e0 = tris1[currentTri].vertices[1].position - tris1[currentTri].vertices[2].position;
+			e1 = tris1[currentTri].vertices[2].position - tris1[currentTri].vertices[0].position;
+			e2 = tris1[currentTri].vertices[0].position - tris1[currentTri].vertices[1].position;
 			e0.Normalize();
 			e1.Normalize();
 			e2.Normalize();
 
 			n0 = e0.CrossProduct(-e2);
 			n0.Normalize();
-			tris1[currentTri].vertices[0]->normal += n0;
+			tris1[currentTri].vertices[0].normal += n0;
 
 			n1 = e1.CrossProduct(-e0);
 			n1.Normalize();
-			tris1[currentTri].vertices[1]->normal += n1;
+			tris1[currentTri].vertices[1].normal += n1;
 
 			n2 = e2.CrossProduct(-e1);
 			n2.Normalize();
-			tris1[currentTri].vertices[2]->normal += n2;
+			tris1[currentTri].vertices[2].normal += n2;
 
 
-			tris1[currentTri].vertices[0]->normal.Normalize();
-			tris1[currentTri].vertices[1]->normal.Normalize();
-			tris1[currentTri].vertices[2]->normal.Normalize();
+			tris1[currentTri].vertices[0].normal.Normalize();
+			tris1[currentTri].vertices[1].normal.Normalize();
+			tris1[currentTri].vertices[2].normal.Normalize();
 
 
-			tris1[currentTri + toffset].vertices[0]->normal.LoadZero();
-			tris1[currentTri + toffset].vertices[1]->normal.LoadZero();
-			tris1[currentTri + toffset].vertices[2]->normal.LoadZero();
-			e0 = tris1[currentTri + toffset].vertices[1]->position - tris1[currentTri + toffset].vertices[2]->position;
-			e1 = tris1[currentTri + toffset].vertices[2]->position - tris1[currentTri + toffset].vertices[0]->position;
-			e2 = tris1[currentTri + toffset].vertices[0]->position - tris1[currentTri + toffset].vertices[1]->position;
+			tris1[currentTri + toffset].vertices[0].normal.LoadZero();
+			tris1[currentTri + toffset].vertices[1].normal.LoadZero();
+			tris1[currentTri + toffset].vertices[2].normal.LoadZero();
+			e0 = tris1[currentTri + toffset].vertices[1].position - tris1[currentTri + toffset].vertices[2].position;
+			e1 = tris1[currentTri + toffset].vertices[2].position - tris1[currentTri + toffset].vertices[0].position;
+			e2 = tris1[currentTri + toffset].vertices[0].position - tris1[currentTri + toffset].vertices[1].position;
 			e0.Normalize();
 			e1.Normalize();
 			e2.Normalize();
 
 			n0 = e0.CrossProduct(-e2);
 			n0.Normalize();
-			tris1[currentTri + toffset].vertices[0]->normal += n0;
+			tris1[currentTri + toffset].vertices[0].normal += n0;
 
 			n1 = e1.CrossProduct(-e0);
 			n1.Normalize();
-			tris1[currentTri + toffset].vertices[1]->normal += n1;
+			tris1[currentTri + toffset].vertices[1].normal += n1;
 
 			n2 = e2.CrossProduct(-e1);
 			n2.Normalize();
-			tris1[currentTri + toffset].vertices[2]->normal += n2;
+			tris1[currentTri + toffset].vertices[2].normal += n2;
 
 
-			tris1[currentTri + toffset].vertices[0]->normal.Normalize();
-			tris1[currentTri + toffset].vertices[1]->normal.Normalize();
-			tris1[currentTri + toffset].vertices[2]->normal.Normalize();
+			tris1[currentTri + toffset].vertices[0].normal.Normalize();
+			tris1[currentTri + toffset].vertices[1].normal.Normalize();
+			tris1[currentTri + toffset].vertices[2].normal.Normalize();
 
 			currentTri++;
 		}

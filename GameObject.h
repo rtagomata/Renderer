@@ -17,7 +17,7 @@ struct MeshQuad
 
 struct MeshTriangle
 {
-	MeshVertex* vertices[3];
+	MeshVertex vertices[3];
 };
 
 class GameObject : Serializer {

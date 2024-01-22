@@ -71,7 +71,7 @@ namespace Initializer {
 		glAttachShader(game::progID, vertID);
 		glAttachShader(game::progID, fragID);
 
-		glBindFragDataLocation(game::progID, 0, "outputPosition");
+		glBindFragDataLocation(game::progID, 0, "fragColor");
 		glLinkProgram(game::progID);
 
 		printProgramInfoLog(game::progID);
